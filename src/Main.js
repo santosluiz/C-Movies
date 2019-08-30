@@ -10,7 +10,7 @@ import Movie from "./components/Movie";
 // Importanto o component <Switch /> e <Route /> da nossa Lib de rotas
 
 const Main = () => (
-  <main>
+  <main style={{margin: '60px 0'}}>
     <Switch>
       <Route exact path='/' component={Home}/>
       <Route path='/movie' component={Movie}/>
