@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import Loading from '../Loading';
+import { device } from '../../helper/device';
+import imgDefaultDesktop from '../../assets/img/imgDefaultDesktop.jpg'
+
 // import { NavLink } from 'react-router-dom';
 
 const SearchBar = styled.input.attrs({  
@@ -24,7 +27,6 @@ const SearchBar = styled.input.attrs({
     color: #89adc4;
   }
 `
-
 const ContainerLoading = styled.div`
   width: 100%;
   text-align: center;
@@ -33,18 +35,29 @@ const ContainerLoading = styled.div`
 const CardMovie = styled.div`
   width: 100%;
   display: flex;
-  margin: 30px 0;
+  margin: 60px 0;
+  -webkit-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
+  box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
+  @media ${device.tablet} {  
+    flex-direction: column;
+    align-items: center;
+  }
 `
 const MovieImage = styled.div`
   width: 250px;
 `
 const CardContent = styled.div`
   width: calc(100% - 250px);
+  position: relative;
   background: #ebebeb;
+  @media ${device.tablet} {  
+    width: 100%;
+  }
 `
 const CardTopBar = styled.div`
-  width: 100%;
-  height: 70px;
+  width: 100%;  
+  height: 95px;
   background: #116193;
   position: relative;
 `
@@ -58,7 +71,7 @@ const CardH1 = styled.h1`
 `
 const CardPopularity = styled.span`
   position: absolute;
-  top: 30px;
+  top: 50px;
   left: 11px;
   width: 70px;
   height: 70px;
@@ -73,12 +86,24 @@ const CardPopularity = styled.span`
   justify-content: center;
   line-height: 0;  
 `
-const CardDate = styled.div`
+const CardDate = styled.p`
   margin: 0 0 0 100px;
+  padding-top: 4px;
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
 `
 const CardDescription = styled.div`
-  margin: 40px 20px;
-  font-family: 'Lato', sans-serif;
+  margin: 35px 20px;
+  font-family: 'Lato',sans-serif;
+  font-weight: 400;
+}
+`
+const CardReadMore = styled.div`
+  font-family: 'Lato',sans-serif;
+  position: absolute;
+  bottom: 0;
+  right: 20px;
 `
 
 class Home extends Component{
@@ -157,6 +182,8 @@ class Home extends Component{
     
     if(pathImage){
       path = this.state.urlImage + pathImage
+    } else {
+      path = imgDefaultDesktop
     }
 
     //TO-DO 
@@ -177,7 +204,6 @@ class Home extends Component{
 
   render(){
     const { loading, movie, find } = this.state;
-    console.log(this.state.movie)
     return(
       <div>
         <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />        
@@ -192,7 +218,7 @@ class Home extends Component{
             return(
               <CardMovie key={content.id}>
                 <MovieImage>
-                  <img src={this.handleGetImageCard(content.poster_path)} alt="" style={{width: '100%'}}/>
+                  <img src={this.handleGetImageCard(content.poster_path)} alt="" style={{width: '100%', height: '100%'}}/>
                 </MovieImage>
                 <CardContent>
                   
@@ -207,8 +233,12 @@ class Home extends Component{
 
                   <CardDescription>
                     <p>{content.overview}</p>
-                    <span>SAIBA MAIS!</span>
                   </CardDescription>
+
+                  <CardReadMore>
+                    <p>SAIBA MAIS!</p>
+                  </CardReadMore>
+
                 </CardContent>
               </CardMovie>
               )
