@@ -55,10 +55,10 @@ const loaderInnerAnim = css`
 
 const Loader = styled.span`
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   position: relative;
-  border: 4px solid #48acee;
+  border: 4px solid #00e5e2;
   top: 50%;  
   animation: ${loaderAnim};
 `
@@ -66,7 +66,7 @@ const LoaderInner = styled.span`
   vertical-align: top;
   display: inline-block;
   width: 100%;
-  background-color: #cecece;
+  background-color: #48acee;
   animation: ${loaderInnerAnim};
 `
 const Loading = () => (

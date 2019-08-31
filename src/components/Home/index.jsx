@@ -25,11 +25,69 @@ const SearchBar = styled.input.attrs({
   }
 `
 
+const ContainerLoading = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 150px;
+`
+const CardMovie = styled.div`
+  width: 100%;
+  display: flex;
+  margin: 30px 0;
+`
+const MovieImage = styled.div`
+  width: 250px;
+`
+const CardContent = styled.div`
+  width: calc(100% - 250px);
+  background: #ebebeb;
+`
+const CardTopBar = styled.div`
+  width: 100%;
+  height: 70px;
+  background: #116193;
+  position: relative;
+`
+const CardH1 = styled.h1`
+  position: absolute;
+  bottom: 3px;
+  margin: 0 0 0 100px;
+  font-size: 35px;
+  font-weight: 300;
+  color: #00e8e4;
+`
+const CardPopularity = styled.span`
+  position: absolute;
+  top: 30px;
+  left: 11px;
+  width: 70px;
+  height: 70px;
+  background: #116193;
+  color: #00e8e4;
+  font-size: 25px;
+  font-weight: 300;
+  border: 5px solid #00e8e4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;  
+`
+const CardDate = styled.div`
+  margin: 0 0 0 100px;
+`
+const CardDescription = styled.div`
+  margin: 40px 20px;
+  font-family: 'Lato', sans-serif;
+`
+
 class Home extends Component{
 
   state = {
     movie: [],
     loading: false,
+    find: false,
+    urlImage: "https://image.tmdb.org/t/p/w300/",
   }
 
   getValueSearch = (event) => {   
@@ -37,44 +95,130 @@ class Home extends Component{
     this.setState({
       loading: true,
     })
+    
+    let value = event.target.value
 
-    let url = new URL("https://api.themoviedb.org/3/search/movie?"),
-        params = {
-          api_key: "1b81b68eab6ab1714626504a1e36be3a", 
-          language: "pt-BR",
-          query: event.target.value,
-          page: 5,
-          include_adult: false
-        }
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    if(value !== ""){
+      setTimeout(() => {
+        let url = new URL("https://api.themoviedb.org/3/search/movie?"),
+            params = {
+              api_key: "1b81b68eab6ab1714626504a1e36be3a", 
+              language: "pt-BR",
+              query: value,
+              page: 1,
+              include_adult: false
+            }
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+  
+        fetch(url)
+        .then(res => res.json())
+        .then(data => {          
+          this.setState({
+            movie: data.results,
+            loading: false,
+            find: true,
+          })
+        })
+        .catch(err => {
+          console.log(err)
+          throw err;
+        });    
+      }, 1000);
 
-    fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)      
-      this.setState({
-        movie: data,
+    } else {
+      
+      this.setState({ 
+        movie: [],
         loading: false,
+        find: false,
       })
-    })
-    .catch(err => {
-      console.log(err)
-      throw err;
-    });    
+    }
+  }
+
+  handleConvertDate = (date) => {
+    let today = new Date(date)
+    let dd = today.getDate(); 
+    let mm = today.getMonth() + 1; 
+    let yyyy = today.getFullYear();
+
+    if (dd < 10) { 
+      dd = '0' + dd; 
+    } 
+    if (mm < 10) { 
+      mm = '0' + mm; 
+    } 
+    today = dd + '/' + mm + '/' + yyyy; 
+
+    return today;
+  }
+
+  handleGetImageCard = (pathImage) => {
+    let path = ""
+    
+    if(pathImage){
+      path = this.state.urlImage + pathImage
+    }
+
+    //TO-DO 
+    //CRIAR O ELSE COM A IMAGEM DEFAULT
+
+    return path
+  }
+
+  handleGetPopularity = (popularity) => {
+    let value = ""
+    if(popularity > 1){
+      value = ~~popularity + "%"
+    } else {
+      value = popularity.toFixed(1) + "%"
+    }
+    return value
   }
 
   render(){
-    const { loading } = this.state;
+    const { loading, movie, find } = this.state;
     console.log(this.state.movie)
     return(
       <div>
-        <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />
-        <p>EU SOU A HOME!!</p>
-        <div>
-          {loading && (
+        <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />        
+        {loading && (
+          <ContainerLoading>
             <Loading />
-          )}
-        </div>
+          </ContainerLoading>
+        )}
+        
+        {movie.length > 0 && find &&
+          movie.map(content => {          
+            return(
+              <CardMovie key={content.id}>
+                <MovieImage>
+                  <img src={this.handleGetImageCard(content.poster_path)} alt="" style={{width: '100%'}}/>
+                </MovieImage>
+                <CardContent>
+                  
+                  <CardTopBar>
+                    <CardH1>{content.title}</CardH1>
+                    <CardPopularity>{this.handleGetPopularity(content.popularity)}</CardPopularity>
+                  </CardTopBar>
+
+                  <CardDate>                
+                    {this.handleConvertDate(content.release_date)}
+                  </CardDate>
+
+                  <CardDescription>
+                    <p>{content.overview}</p>
+                    <span>SAIBA MAIS!</span>
+                  </CardDescription>
+                </CardContent>
+              </CardMovie>
+              )
+            })
+        }
+
+        {find && movie.length === 0 &&
+          <p>Não foram encontrados resultados</p>         
+        }
+
         {/* <li><NavLink to="movie">Ir para página do filme</NavLink></li> */}
       </div>
     )
