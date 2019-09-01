@@ -2,6 +2,13 @@ import imgDefaultDesktop from '../assets/img/imgDefaultDesktop.jpg'
 import { countries } from './countriesArray.js'
 import { statusMovie } from './statusMovieArray.js'
 
+export const handleSynopsis = (synopsis) => {   
+  if(synopsis === ""){
+    return "Não há sinopse disponível para este filme."
+  }
+
+  return synopsis  
+}
 
 export const handleGetImageCard = (urlImage, pathImage) => {
   let path = ""

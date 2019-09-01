@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { Popularity } from '../Popularity';
 import { device } from '../../helper/device';
-import { handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage, handleConvertRuntime } from '../../helper/getDataMovie.js';
+import { handleSynopsis, handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage, handleConvertRuntime } from '../../helper/getDataMovie.js';
 
 const MovieBox = styled.div`  
   background: #f2f2f2;
@@ -84,6 +84,7 @@ export class CardMoviePage extends Component{
     return (amount).toLocaleString('pt-BR') + ",00"
   }
 
+
   render(){
     const { urlImage } = this.state
 
@@ -99,7 +100,7 @@ export class CardMoviePage extends Component{
           <div>
             <MovieH2>Sinopse</MovieH2>
             <HR />
-            <p>{this.props.movie.overview}</p>
+            <p>{handleSynopsis(this.props.movie.overview)}</p>
           </div>
 
           <div>

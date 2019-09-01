@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import { device } from '../../helper/device';
-import { handleConvertDate, handleGetImageCard } from '../../helper/getDataMovie.js';
+import { handleSynopsis, handleConvertDate, handleGetImageCard } from '../../helper/getDataMovie.js';
 import { NavLink } from 'react-router-dom';
 import { Popularity } from '../Popularity';
 
@@ -42,27 +42,11 @@ const CardH1 = styled.h1`
   font-weight: 300;
   color: #00e8e4;
 `
-
 const CardBoxPopularity = styled.div`
   position: absolute;
   top: 50px;
   left: 11px;
 `
-
-// const CardPopularity = styled.span`
-//   width: 70px;
-//   height: 70px;
-//   background: #116193;
-//   color: #00e8e4;
-//   font-size: 25px;
-//   font-weight: 300;
-//   border: 5px solid #00e8e4;
-//   border-radius: 50%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   line-height: 0;  
-// `
 const CardDate = styled.p`
   margin: 0 0 0 100px;
   padding-top: 4px;
@@ -100,6 +84,7 @@ export class CardMovieHome extends Component{
         <CardContent>
           <CardTopBar>
             <CardH1>{this.props.content.title}</CardH1>
+          
             <CardBoxPopularity>
               <Popularity size="small" content={this.props.content.popularity}></Popularity>                                
             </CardBoxPopularity>
@@ -110,7 +95,7 @@ export class CardMovieHome extends Component{
           </CardDate>
 
           <CardDescription>
-            <p>{this.props.content.overview}</p>
+            <p>{handleSynopsis(this.props.movie.overview)}</p>            
           </CardDescription>
 
           <CardReadMore>
