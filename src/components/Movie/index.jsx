@@ -50,7 +50,9 @@ const MovieTrailer = styled.div`
   width: 100%;
   margin: 40px 0;
 `
-
+const HasNoTrailer = styled.div`
+  text-align: center;
+`
 
 class Movie extends Component {
 
@@ -58,6 +60,7 @@ class Movie extends Component {
     movie: [],    
     idMovie: "",    
     trailerUrl: "",
+    hasTrailer: true,
     urlImage: "https://image.tmdb.org/t/p/w300/",
   }
 
@@ -70,7 +73,6 @@ class Movie extends Component {
     }, () => {
       this.loadData(this.state.idMovie)
       this.loadTrailer(this.state.idMovie)    
-
     })    
   }
 
@@ -110,16 +112,23 @@ class Movie extends Component {
     .then(res => res.json())
     .then(data => {          
       console.log(data)
-      let keyTrailer = ""
-      data.results.map(item => { 
-       keyTrailer = item.key
-      })
-
-      this.setState({
-        trailerUrl: "https://www.youtube.com/embed/" + keyTrailer
-        // loading: false,
-        // find: true,
-      })
+      if(data.results.length > 0){
+        let keyTrailer = ""
+        data.results.map(item => { 
+         keyTrailer = item.key
+        })
+  
+        this.setState({
+          trailerUrl: "https://www.youtube.com/embed/" + keyTrailer,
+          hasTrailer: true
+          // loading: false,
+          // find: true,
+        })
+      } else {
+        this.setState({
+          hasTrailer: false
+        })
+      }
     })
     .catch(err => {
       console.log(err)
@@ -127,9 +136,12 @@ class Movie extends Component {
     });      
   }
 
+  handleNoHasTrailer = (title) => {
+    return "https://www.youtube.com/results?search_query=" + title    
+  }
 
   render(){    
-    const { movie, urlImage, trailerUrl } = this.state    
+    const { movie, urlImage, trailerUrl, hasTrailer } = this.state    
     return(
       <Main>
         {movie.id > 0 &&
@@ -190,17 +202,24 @@ class Movie extends Component {
         </MovieBox>
         }
 
-        <MovieTrailer>
-          <iframe 
-            style={{width: '100%', height: '600px'}}
-            width="560" 
-            height="315" 
-            src={trailerUrl}
-            frameBorder="0" 
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>              
-          </iframe>
-        </MovieTrailer>
+        {hasTrailer ? (
+          <MovieTrailer>
+            <iframe 
+              style={{width: '100%', height: '600px'}}
+              width="560" 
+              height="315" 
+              src={trailerUrl}
+              frameBorder="0" 
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>              
+            </iframe>
+          </MovieTrailer>
+        ) : (
+          <HasNoTrailer>            
+            <p>Este filme não possui trailer, <a href={this.handleNoHasTrailer(movie.title)} target="_blank">clique aqui para pesquisar</a></p>
+          </HasNoTrailer>
+        )
+        }
       </Main>
     )
   }
