@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import Loading from '../Loading';
-import { device } from '../../helper/device';
-import { handleConvertDate, handleGetImageCard } from '../../helper/getDataMovie.js';
-import { NavLink } from 'react-router-dom';
-import { Popularity } from '../Popularity';
+import { CardMovieHome } from '../CardMovieHome';
 
 const SearchBar = styled.input.attrs({  
   type: "text",
@@ -32,96 +29,16 @@ const ContainerLoading = styled.div`
   text-align: center;
   margin-top: 150px;
 `
-const CardMovie = styled.div`
-  width: 100%;
-  display: flex;
-  margin: 60px 0;
-  -webkit-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
-  box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
-  @media ${device.tablet} {  
-    flex-direction: column;
-    align-items: center;
-  }
-`
-const MovieImage = styled.div`
-  width: 250px;
-`
-const CardContent = styled.div`
-  width: calc(100% - 250px);
-  position: relative;
-  background: #ebebeb;
-  @media ${device.tablet} {  
-    width: 100%;
-  }
-`
-const CardTopBar = styled.div`
-  width: 100%;  
-  height: 95px;
-  background: #116193;
-  position: relative;
-`
-const CardH1 = styled.h1`
-  position: absolute;
-  bottom: 3px;
-  margin: 0 0 0 100px;
-  font-size: 35px;
-  font-weight: 300;
-  color: #00e8e4;
-`
-
-const CardBoxPopularity = styled.div`
-  position: absolute;
-  top: 50px;
-  left: 11px;
-`
-
-const CardPopularity = styled.span`
-  width: 70px;
-  height: 70px;
-  background: #116193;
-  color: #00e8e4;
-  font-size: 25px;
-  font-weight: 300;
-  border: 5px solid #00e8e4;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;  
-`
-const CardDate = styled.p`
-  margin: 0 0 0 100px;
-  padding-top: 4px;
-  font-family: 'Lato', sans-serif;
-  font-size: 18px;
-  font-weight: 300;
-`
-const CardDescription = styled.div`
-  margin: 35px 20px;
-  font-family: 'Lato',sans-serif;
-  font-weight: 400;
-}
-`
-const CardReadMore = styled.div`
-  font-family: 'Lato',sans-serif;
-  position: absolute;
-  bottom: 0;
-  right: 20px;
-`
 
 class Home extends Component{
-
   state = {
     valueSearch: "",
     movie: [],
     loading: false,
-    find: false,
-    urlImage: "https://image.tmdb.org/t/p/w300/",
+    find: false,    
   }
 
-  getValueSearch = (event) => {   
-    
+  getValueSearch = (event) => {       
     this.setState({
       loading: true,
       valueSearch: event.target.value
@@ -140,8 +57,7 @@ class Home extends Component{
     }
   }
 
-  searchData = (pageNumber) => {    
-    console.log("oi nego!")
+  searchData = (pageNumber) => {        
     setTimeout(() => {
       let url = new URL("https://api.themoviedb.org/3/search/movie?"),
           params = {
@@ -169,10 +85,9 @@ class Home extends Component{
     }, 1000);
   }
 
-
   render(){
-    const { loading, movie, find, urlImage } = this.state;
-    console.log(movie)
+    const { loading, movie, find } = this.state;
+    
     return(
       <div>
         <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />        
@@ -185,34 +100,7 @@ class Home extends Component{
         {movie.length > 0 && find &&
           movie.map(content => {          
             return(              
-              <CardMovie key={content.id}>
-                <MovieImage>
-                  <img src={handleGetImageCard(urlImage, content.poster_path)} alt="" style={{width: '100%', height: '100%'}}/>
-                </MovieImage>
-                <CardContent>
-
-                  <CardTopBar>
-                    <CardH1>{content.title}</CardH1>
-                    <CardBoxPopularity>
-                      <Popularity size="small" content={content.popularity}></Popularity>                  
-                      {/* <CardPopularity>{this.handleGetPopularity(content.popularity)}</CardPopularity> */}
-                    </CardBoxPopularity>
-                  </CardTopBar>
-
-                  <CardDate>                
-                    {handleConvertDate(content.release_date)}
-                  </CardDate>
-
-                  <CardDescription>
-                    <p>{content.overview}</p>
-                  </CardDescription>
-
-                  <CardReadMore>
-                    <NavLink to={`movie/${content.id}`}><p>SAIBA MAIS!</p></NavLink>
-                  </CardReadMore>
-
-                </CardContent>
-              </CardMovie>              
+                <CardMovieHome content={content} />                         
               )
             })
         }
@@ -232,12 +120,10 @@ class Home extends Component{
         {find && movie.length === 0 &&
           <p>Não foram encontrados resultados</p>         
         }
-
-        {/* <li><NavLink to="movie">Ir para página do filme</NavLink></li> */}
+        
       </div>
     )
   }
 }
-
 
 export default Home;

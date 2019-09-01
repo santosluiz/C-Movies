@@ -35,13 +35,13 @@ export class Popularity extends Component{
   render(){
     return(
       <div>
-      {this.props.size === "small" &&
-        <CardPopularitySmall>{handleGetPopularity(this.props.content)}</CardPopularitySmall>
-      }
+        {this.props.size === "small" &&
+          <CardPopularitySmall>{handleGetPopularity(this.props.content)}</CardPopularitySmall>
+        }
 
-      {this.props.size === "big" &&
-        <CardPopularityBig>{handleGetPopularity(this.props.content)}</CardPopularityBig>
-      }
+        {this.props.size === "big" &&
+          <CardPopularityBig>{handleGetPopularity(this.props.content)}</CardPopularityBig>
+        }
       </div>
     )
   }
