@@ -7,7 +7,9 @@ import { handleConvertDate, handleGetImageCard } from '../../helper/getDataMovie
 // import { NavLink } from 'react-router-dom';
 
 const Main = styled.div`
-  width: 100%;  
+  width: 100%;    
+`
+const MovieBox = styled.div`  
   background: #f2f2f2;
 `
 const Title = styled.div`
@@ -35,38 +37,44 @@ const MovieData = styled.div`
 const MovieContent = styled.div`
   padding: 10px 30px;
 `
-const MovieImage = styled.div`
-  
+const MovieImage = styled.div`  
 `
 const HR = styled.hr`
   background: #79edeb
 `
-
 const MovieInfo = styled.div`
   display: flex;
   justify-content: space-around;
 `
-
+const MovieTrailer = styled.div`
+  width: 100%;
+  margin: 40px 0;
+`
 
 
 class Movie extends Component {
 
   state = {    
     movie: [],    
+    idMovie: "",    
+    trailerUrl: "",
     urlImage: "https://image.tmdb.org/t/p/w300/",
   }
 
-  componentDidMount(){ 
-    console.log("DID MOUNT")    
-    this.loadData()
-  }
-
-  loadData = () => {
+  componentDidMount(){     
     const currentUrl = window.location.href
     const id = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
-    console.log(id)
+    this.setState({
+      idMovie: id
+    }, () => {
+      this.loadData(this.state.idMovie)
+      this.loadTrailer(this.state.idMovie)    
 
+    })    
+  }
+
+  loadData = (id) => {    
     let url = new URL(`https://api.themoviedb.org/3/movie/${id}?`),
     params = {      
       language: "pt-BR",
@@ -87,22 +95,52 @@ class Movie extends Component {
     .catch(err => {
       console.log(err)
       throw err;
-    });  
+    });      
   }
 
+  loadTrailer = (id) => {   
+    let url = new URL(`https://api.themoviedb.org/3/movie/${id}/videos?`),
+    params = {      
+      api_key: "1b81b68eab6ab1714626504a1e36be3a", 
+      language: "pt-BR",
+    }
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {          
+      console.log(data)
+      let keyTrailer = ""
+      data.results.map(item => { 
+       keyTrailer = item.key
+      })
+
+      this.setState({
+        trailerUrl: "https://www.youtube.com/embed/" + keyTrailer
+        // loading: false,
+        // find: true,
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      throw err;
+    });      
+  }
+
+
   render(){    
-    const { movie, urlImage } = this.state
-    console.log(this.state.movie)
+    const { movie, urlImage, trailerUrl } = this.state    
     return(
       <Main>
         {movie.id > 0 &&
-        <div>
-        <Title>
-          <TitleH1>{movie.title}</TitleH1>
-          <Date>{handleConvertDate(movie.release_date)}</Date>
-        </Title>        
-        
-        <MovieData>
+        <MovieBox>
+
+          <Title>
+            <TitleH1>{movie.title}</TitleH1>
+            <Date>{handleConvertDate(movie.release_date)}</Date>
+          </Title>        
+          
+          <MovieData>
           <MovieContent>
             <div>
               <h2>Sinopse</h2>
@@ -148,8 +186,21 @@ class Movie extends Component {
           </MovieImage>
           
         </MovieData>
-        </div>
+        
+        </MovieBox>
         }
+
+        <MovieTrailer>
+          <iframe 
+            style={{width: '100%', height: '600px'}}
+            width="560" 
+            height="315" 
+            src={trailerUrl}
+            frameBorder="0" 
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>              
+          </iframe>
+        </MovieTrailer>
       </Main>
     )
   }
