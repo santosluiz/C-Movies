@@ -55,3 +55,12 @@ export const handleTranslateStatusMovie = (status) => {
   return statusPT
 }
 
+export const handleConvertRuntime = (runtime) => {
+  let h = Math.floor(runtime / 60);
+  let m = runtime % 60;
+  h = h < 10 ? '0' + h : h;
+  m = m < 10 ? '0' + m : m;
+  
+  return `${h}h ${m}min`
+}
+

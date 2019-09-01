@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Loading from '../Loading';
 import { device } from '../../helper/device';
 import imgDefaultDesktop from '../../assets/img/imgDefaultDesktop.jpg';
-import { handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage } from '../../helper/getDataMovie.js';
+import { handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage, handleConvertRuntime } from '../../helper/getDataMovie.js';
 // import { NavLink } from 'react-router-dom';
 
 const Main = styled.div`
@@ -180,7 +180,7 @@ class Movie extends Component {
 
                 <div>
                   <h3>Duração</h3>
-                  <p>{movie.runtime}</p>
+                  <p>{handleConvertRuntime(movie.runtime)}</p>
                 </div>
 
                 <div>
