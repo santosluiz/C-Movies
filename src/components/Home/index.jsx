@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Loading from '../Loading';
 import { device } from '../../helper/device';
 import imgDefaultDesktop from '../../assets/img/imgDefaultDesktop.jpg'
-
-// import { NavLink } from 'react-router-dom';
+import { handleConvertDate, handleGetImageCard } from '../../helper/getDataMovie.js';
+import { NavLink } from 'react-router-dom';
 
 const SearchBar = styled.input.attrs({  
   type: "text",
@@ -160,37 +160,16 @@ class Home extends Component{
     }
   }
 
-  handleConvertDate = (date) => {
-    let today = new Date(date)
-    let dd = today.getDate(); 
-    let mm = today.getMonth() + 1; 
-    let yyyy = today.getFullYear();
-
-    if (dd < 10) { 
-      dd = '0' + dd; 
-    } 
-    if (mm < 10) { 
-      mm = '0' + mm; 
-    } 
-    today = dd + '/' + mm + '/' + yyyy; 
-
-    return today;
-  }
-
-  handleGetImageCard = (pathImage) => {
-    let path = ""
+  // handleGetImageCard = (pathImage) => {
+  //   let path = ""
     
-    if(pathImage){
-      path = this.state.urlImage + pathImage
-    } else {
-      path = imgDefaultDesktop
-    }
-
-    //TO-DO 
-    //CRIAR O ELSE COM A IMAGEM DEFAULT
-
-    return path
-  }
+  //   if(pathImage){
+  //     path = this.state.urlImage + pathImage
+  //   } else {
+  //     path = imgDefaultDesktop
+  //   }
+  //   return path
+  // }
 
   handleGetPopularity = (popularity) => {
     let value = ""
@@ -203,7 +182,8 @@ class Home extends Component{
   }
 
   render(){
-    const { loading, movie, find } = this.state;
+    const { loading, movie, find, urlImage } = this.state;
+    console.log(movie)
     return(
       <div>
         <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />        
@@ -218,7 +198,7 @@ class Home extends Component{
             return(
               <CardMovie key={content.id}>
                 <MovieImage>
-                  <img src={this.handleGetImageCard(content.poster_path)} alt="" style={{width: '100%', height: '100%'}}/>
+                  <img src={handleGetImageCard(urlImage, content.poster_path)} alt="" style={{width: '100%', height: '100%'}}/>
                 </MovieImage>
                 <CardContent>
                   
@@ -228,7 +208,7 @@ class Home extends Component{
                   </CardTopBar>
 
                   <CardDate>                
-                    {this.handleConvertDate(content.release_date)}
+                    {handleConvertDate(content.release_date)}
                   </CardDate>
 
                   <CardDescription>
@@ -236,7 +216,7 @@ class Home extends Component{
                   </CardDescription>
 
                   <CardReadMore>
-                    <p>SAIBA MAIS!</p>
+                    <NavLink to={`movie/${content.id}`}><p>SAIBA MAIS!</p></NavLink>
                   </CardReadMore>
 
                 </CardContent>
