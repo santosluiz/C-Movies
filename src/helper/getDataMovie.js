@@ -1,5 +1,6 @@
 import imgDefaultDesktop from '../assets/img/imgDefaultDesktop.jpg'
 import { countries } from './countriesArray.js'
+import { statusMovie } from './statusMovieArray.js'
 
 export const handleGetImageCard = (urlImage, pathImage) => {
   let path = ""
@@ -29,7 +30,7 @@ export const handleConvertDate = (date) => {
   return today;
 }
 
-export const handleTranslateArray = (language) => {    
+export const handleTranslateLanguage = (language) => {    
   let langMovie = "--"
   
   countries.map(item => {
@@ -41,3 +42,16 @@ export const handleTranslateArray = (language) => {
 
   return langMovie  
 }
+
+export const handleTranslateStatusMovie = (status) => {    
+  let statusPT = "--"
+  
+  statusMovie.map(item => {
+    if(item.status_english === status){
+      statusPT = item.status_portuguese      
+    }
+  })
+
+  return statusPT
+}
+

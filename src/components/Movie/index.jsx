@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Loading from '../Loading';
 import { device } from '../../helper/device';
 import imgDefaultDesktop from '../../assets/img/imgDefaultDesktop.jpg';
-import { handleConvertDate, handleGetImageCard, handleTranslateArray } from '../../helper/getDataMovie.js';
+import { handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage } from '../../helper/getDataMovie.js';
 // import { NavLink } from 'react-router-dom';
 
 const Main = styled.div`
@@ -170,12 +170,12 @@ class Movie extends Component {
               <MovieInfo>
                 <div>
                   <h3>Situação</h3>
-                  <p>{movie.status}</p>
+                  <p>{handleTranslateStatusMovie(movie.status)}</p>
                 </div>
 
                 <div>
                   <h3>Idioma</h3>
-                  <p>{handleTranslateArray(movie.original_language)}</p>
+                  <p>{handleTranslateLanguage(movie.original_language)}</p>
                 </div>
 
                 <div>
