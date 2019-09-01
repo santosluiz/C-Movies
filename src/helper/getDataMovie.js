@@ -2,6 +2,7 @@ import imgDefaultDesktop from '../assets/img/imgDefaultDesktop.jpg'
 import { countries } from './countriesArray.js'
 import { statusMovie } from './statusMovieArray.js'
 
+
 export const handleGetImageCard = (urlImage, pathImage) => {
   let path = ""
   
@@ -28,6 +29,17 @@ export const handleConvertDate = (date) => {
   today = dd + '/' + mm + '/' + yyyy; 
 
   return today;
+}
+
+export const handleGetPopularity = (popularity) => {  
+  let value = ""
+  if(popularity > 1){
+    value = ~~popularity + "%"
+  } else {
+    value = popularity.toFixed(1) + "%"
+  }
+
+  return value  
 }
 
 export const handleTranslateLanguage = (language) => {    

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Loading from '../Loading';
 import { device } from '../../helper/device';
-import imgDefaultDesktop from '../../assets/img/imgDefaultDesktop.jpg';
+import { Popularity } from '../Popularity';
 import { handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage, handleConvertRuntime } from '../../helper/getDataMovie.js';
 // import { NavLink } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const Title = styled.div`
   box-sizing: border-box;
 `
 const TitleH1 = styled.h1`
-  font-weight: 500;  
+  font-weight: 600;  
   margin: 0;
   color: #196696;
 `
@@ -36,15 +36,49 @@ const MovieData = styled.div`
 `
 const MovieContent = styled.div`
   padding: 10px 30px;
+  width: calc(100% - 400px);
 `
 const MovieImage = styled.div`  
+  width: 400px;
 `
+
+const MovieH2 = styled.h2`
+  color: #4885aa;
+  font-weight: 500;
+  font-size: 29px;
+  margin: 10px 0 0 0;
+`
+const MovieH3 = styled.h3`
+  color: #4885aa;
+`
+
 const HR = styled.hr`
-  background: #79edeb
+  width: 100%;
+  height: 2px;
+  border: none;
+  background: #79edeb;
 `
 const MovieInfo = styled.div`
   display: flex;
   justify-content: space-around;
+`
+const MovieCategorie = styled.div`
+  width: 100%;
+  display: flex;
+  margin: 22px 0;
+`
+const MovieCategorieItem = styled.span`
+  background: #fff;
+  padding: 3px 10px;
+  border-radius: 45px;
+  border: 1px solid #5d92b5;
+  margin-right: 5px;
+  color: #5d92b5;  
+  font-weight: 500;
+`
+const PopularityBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 const MovieTrailer = styled.div`
   width: 100%;
@@ -159,46 +193,63 @@ class Movie extends Component {
           <MovieData>
           <MovieContent>
             <div>
-              <h2>Sinopse</h2>
+              <MovieH2>Sinopse</MovieH2>
               <HR />
               <p>{movie.overview}</p>
             </div>
 
             <div>
-              <h2>Informações</h2>
+              <MovieH2>Informações</MovieH2>
               <HR />
               <MovieInfo>
                 <div>
-                  <h3>Situação</h3>
+                  <MovieH3>Situação</MovieH3>
                   <p>{handleTranslateStatusMovie(movie.status)}</p>
                 </div>
 
                 <div>
-                  <h3>Idioma</h3>
+                  <MovieH3>Idioma</MovieH3>
                   <p>{handleTranslateLanguage(movie.original_language)}</p>
                 </div>
 
                 <div>
-                  <h3>Duração</h3>
+                  <MovieH3>Duração</MovieH3>
                   <p>{handleConvertRuntime(movie.runtime)}</p>
                 </div>
 
                 <div>
-                  <h3>Orçamento</h3>
+                  <MovieH3>Orçamento</MovieH3>
                   <p>${this.handleConvertCurrency(movie.budget)}</p>
                 </div>
 
                 <div>
-                  <h3>Receita</h3>
+                  <MovieH3>Receita</MovieH3>
                   <p>${this.handleConvertCurrency(movie.revenue)}</p>
                 </div>       
                                                                                          
               </MovieInfo>              
             </div>
+
+            <MovieCategorie>
+              {movie.genres.map(item => {
+                return (
+                  <MovieCategorieItem>{item.name}</MovieCategorieItem>
+                )
+              })}
+            </MovieCategorie>
+
+              <PopularityBox>
+                <Popularity size="big" content={movie.popularity}></Popularity>                                  
+              </PopularityBox>
+
           </MovieContent>
 
           <MovieImage>
-            <img src={handleGetImageCard(urlImage, movie.poster_path)} alt={movie.title} />
+            <img 
+              src={handleGetImageCard(urlImage, movie.poster_path)} 
+              alt={movie.title} 
+              style={{width: "100%", height: "100%"}}
+            />
           </MovieImage>
           
         </MovieData>

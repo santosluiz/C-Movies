@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 import Loading from '../Loading';
 import { device } from '../../helper/device';
-import imgDefaultDesktop from '../../assets/img/imgDefaultDesktop.jpg'
 import { handleConvertDate, handleGetImageCard } from '../../helper/getDataMovie.js';
 import { NavLink } from 'react-router-dom';
+import { Popularity } from '../Popularity';
 
 const SearchBar = styled.input.attrs({  
   type: "text",
@@ -69,10 +69,14 @@ const CardH1 = styled.h1`
   font-weight: 300;
   color: #00e8e4;
 `
-const CardPopularity = styled.span`
+
+const CardBoxPopularity = styled.div`
   position: absolute;
   top: 50px;
   left: 11px;
+`
+
+const CardPopularity = styled.span`
   width: 70px;
   height: 70px;
   background: #116193;
@@ -160,26 +164,7 @@ class Home extends Component{
     }
   }
 
-  // handleGetImageCard = (pathImage) => {
-  //   let path = ""
-    
-  //   if(pathImage){
-  //     path = this.state.urlImage + pathImage
-  //   } else {
-  //     path = imgDefaultDesktop
-  //   }
-  //   return path
-  // }
 
-  handleGetPopularity = (popularity) => {
-    let value = ""
-    if(popularity > 1){
-      value = ~~popularity + "%"
-    } else {
-      value = popularity.toFixed(1) + "%"
-    }
-    return value
-  }
 
   render(){
     const { loading, movie, find, urlImage } = this.state;
@@ -201,10 +186,13 @@ class Home extends Component{
                   <img src={handleGetImageCard(urlImage, content.poster_path)} alt="" style={{width: '100%', height: '100%'}}/>
                 </MovieImage>
                 <CardContent>
-                  
+
                   <CardTopBar>
                     <CardH1>{content.title}</CardH1>
-                    <CardPopularity>{this.handleGetPopularity(content.popularity)}</CardPopularity>
+                    <CardBoxPopularity>
+                      <Popularity size="small" content={content.popularity}></Popularity>                  
+                      {/* <CardPopularity>{this.handleGetPopularity(content.popularity)}</CardPopularity> */}
+                    </CardBoxPopularity>
                   </CardTopBar>
 
                   <CardDate>                
