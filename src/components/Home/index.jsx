@@ -113,6 +113,7 @@ const CardReadMore = styled.div`
 class Home extends Component{
 
   state = {
+    valueSearch: "",
     movie: [],
     loading: false,
     find: false,
@@ -123,39 +124,14 @@ class Home extends Component{
     
     this.setState({
       loading: true,
+      valueSearch: event.target.value
     })
     
     let value = event.target.value
 
     if(value !== ""){
-      setTimeout(() => {
-        let url = new URL("https://api.themoviedb.org/3/search/movie?"),
-            params = {
-              api_key: "1b81b68eab6ab1714626504a1e36be3a", 
-              language: "pt-BR",
-              query: value,
-              page: 1,
-              include_adult: false
-            }
-        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-  
-        fetch(url)
-        .then(res => res.json())
-        .then(data => {          
-          this.setState({
-            movie: data.results,
-            loading: false,
-            find: true,
-          })
-        })
-        .catch(err => {
-          console.log(err)
-          throw err;
-        });    
-      }, 1000);
-
-    } else {
-      
+      this.searchData(1)
+    } else {      
       this.setState({ 
         movie: [],
         loading: false,
@@ -164,6 +140,34 @@ class Home extends Component{
     }
   }
 
+  searchData = (pageNumber) => {    
+    console.log("oi nego!")
+    setTimeout(() => {
+      let url = new URL("https://api.themoviedb.org/3/search/movie?"),
+          params = {
+            api_key: "1b81b68eab6ab1714626504a1e36be3a", 
+            language: "pt-BR",
+            query: this.state.valueSearch,
+            page: pageNumber,
+            include_adult: false
+          }
+      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+      fetch(url)
+      .then(res => res.json())
+      .then(data => {          
+        this.setState({
+          movie: data.results,
+          loading: false,
+          find: true,
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        throw err;
+      });    
+    }, 1000);
+  }
 
 
   render(){
@@ -180,7 +184,7 @@ class Home extends Component{
         
         {movie.length > 0 && find &&
           movie.map(content => {          
-            return(
+            return(              
               <CardMovie key={content.id}>
                 <MovieImage>
                   <img src={handleGetImageCard(urlImage, content.poster_path)} alt="" style={{width: '100%', height: '100%'}}/>
@@ -208,10 +212,22 @@ class Home extends Component{
                   </CardReadMore>
 
                 </CardContent>
-              </CardMovie>
+              </CardMovie>              
               )
             })
         }
+
+        {movie.length > 0 && find &&
+          <div>
+            <ul>
+              <li><div onClick={() => this.searchData(1)}>1</div></li>
+              <li><div onClick={() => this.searchData(2)}>2</div></li>
+              <li><div onClick={() => this.searchData(3)}>3</div></li>
+              <li><div onClick={() => this.searchData(4)}>4</div></li>
+            </ul>
+          </div>
+        }
+
 
         {find && movie.length === 0 &&
           <p>Não foram encontrados resultados</p>         

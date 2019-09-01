@@ -233,7 +233,7 @@ class Movie extends Component {
             <MovieCategorie>
               {movie.genres.map(item => {
                 return (
-                  <MovieCategorieItem>{item.name}</MovieCategorieItem>
+                  <MovieCategorieItem key={item.id}>{item.name}</MovieCategorieItem>
                 )
               })}
             </MovieCategorie>

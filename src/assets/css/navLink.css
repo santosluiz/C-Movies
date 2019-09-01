@@ -1,0 +1,23 @@
+.titleHeader{
+  color: #00e8e4;
+  text-decoration: none;
+}
+
+.titleHeader:link {
+  color: #00e8e4;
+}
+
+/* visited link */
+.titleHeader:visited {
+  color: #00e8e4;
+}
+
+/* mouse over link */
+.titleHeader:hover {
+  color: #00e8e4;
+}
+
+/* selected link */
+.titleHeader:active {
+  color: #00e8e4;
+}

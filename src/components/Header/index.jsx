@@ -1,6 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
-//import { NavLink } from 'react-router-dom'
+import '../../assets/css/navLink.css';
+import { NavLink } from 'react-router-dom'
 
 const HeaderBar = styled.div`
   width: 100%;
@@ -18,7 +19,7 @@ const Title = styled.h2`
 
 const Header = () => (
   <HeaderBar>
-    <Title>C-MOVIES</Title>
+    <Title><NavLink to="/" className="titleHeader">C-MOVIES</NavLink></Title>
   </HeaderBar>
 );
 
