@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Loading from '../Loading';
 import { device } from '../../helper/device';
 import imgDefaultDesktop from '../../assets/img/imgDefaultDesktop.jpg';
-import { handleConvertDate, handleGetImageCard } from '../../helper/getDataMovie.js';
+import { handleConvertDate, handleGetImageCard, handleTranslateArray } from '../../helper/getDataMovie.js';
 // import { NavLink } from 'react-router-dom';
 
 const Main = styled.div`
@@ -136,6 +136,10 @@ class Movie extends Component {
     });      
   }
 
+  handleConvertCurrency = (amount) => {
+    return (amount).toLocaleString('pt-BR') + ",00"
+  }
+
   handleNoHasTrailer = (title) => {
     return "https://www.youtube.com/results?search_query=" + title    
   }
@@ -171,7 +175,7 @@ class Movie extends Component {
 
                 <div>
                   <h3>Idioma</h3>
-                  <p>{movie.spoken_languages.map(item => { return (item.name)})}</p>
+                  <p>{handleTranslateArray(movie.original_language)}</p>
                 </div>
 
                 <div>
@@ -181,12 +185,12 @@ class Movie extends Component {
 
                 <div>
                   <h3>Orçamento</h3>
-                  <p>{movie.budget}</p>
+                  <p>${this.handleConvertCurrency(movie.budget)}</p>
                 </div>
 
                 <div>
                   <h3>Receita</h3>
-                  <p>{movie.revenue}</p>
+                  <p>${this.handleConvertCurrency(movie.revenue)}</p>
                 </div>       
                                                                                          
               </MovieInfo>              
@@ -211,7 +215,7 @@ class Movie extends Component {
               src={trailerUrl}
               frameBorder="0" 
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen>              
+              allowFullScreen>              
             </iframe>
           </MovieTrailer>
         ) : (
