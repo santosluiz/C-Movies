@@ -1,39 +1,16 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { device } from '../../helper/device';
 import Loading from '../../components/Loading';
 import { CardMoviePage } from '../../components/CardMoviePage';
 import { TrailerMovieContent } from '../../components/TrailerMovieContent';
 import { BackButton } from '../../components/BackButton';
-
-
-const Main = styled.div`
-  width: 100%;
-`
-const BackButtonBox = styled.div`
-  margin-bottom: 20px;
-`
-const ContainerLoading = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-top: 150px;
-`
-const MovieTrailer = styled.div`
-  width: 100%;
-  margin: 40px 0;
-  box-sizing: border-box;
-  @media ${device.tablet} {
-    padding: 0 30px;
-  }
-`
-const HasNoTrailer = styled.div`
-  text-align: center;
-`
-const ErrorBox = styled.div`
-  margin: 50px 0;
-  font-size: 20px;
-  text-align: center;
-`
+import {
+  Main,
+  BackButtonBox,
+  ContainerLoading,
+  MovieTrailer,
+  HasNoTrailer,
+  ErrorBox
+ } from '../../assets/css/moviePage';
 
 class Movie extends Component {
   state = {
@@ -44,7 +21,7 @@ class Movie extends Component {
     loadingTrailer: false,
     errorMovie: false,
     errorTrailer: false,
-    hasTrailer: true,
+    hasTrailer: false,
     urlImage: "https://image.tmdb.org/t/p/w300/",
   }
 
@@ -169,7 +146,6 @@ class Movie extends Component {
 
         {hasTrailer ? (
           <MovieTrailer>
-            <h3>Assista ao trailer:</h3>
             <TrailerMovieContent trailerUrl={trailerUrl} />
           </MovieTrailer>
         ) : (
