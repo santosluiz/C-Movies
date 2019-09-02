@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { device } from '../../helper/device';
 import Loading from '../../components/Loading';
 import { CardMovieHome } from '../../components/CardMovieHome';
+import Pagination from 'react-paginating';
 
 const SearchBox = styled.div`
   @media ${device.tablet}{
@@ -46,31 +47,54 @@ class Home extends Component{
   constructor(props){
     super(props)
     this.timer = null;     
+
+    this.state = {
+      valueSearch: "",
+      allMoviesList: [],
+      movie: [],
+      loading: false,
+      error: false,
+      find: false,    
+      limit: 5,
+      pageCount: 3,
+      total: 0,
+      apiPageRequest: 0,
+      currentPage: 1
+    }
  }
-
-  state = {
-    valueSearch: "",
-    movie: [],
-    loading: false,
-    error: false,
-    find: false,    
-  }
-
+ 
   componentDidUpdate(){
     clearTimeout(this.timer);
   }
 
-  getValueSearch = (event) => {       
+  handleInputEnter = (event) => {
+    if(event.key === 'Enter'){
+      this.getValueSearch(this.state.valueSearch)
+    }    
+  }
+
+  getValueSearch = (event) => {    
+
+    let valueSearchInput = this.state.valueSearch
+
+    if(event.target){
+      valueSearchInput = event.target.value 
+    }
+    
     this.setState({
       loading: true,
-      valueSearch: event.target.value
+      valueSearch: valueSearchInput
     }, () => {
       
       if(this.state.valueSearch !== ""){        
         this.timer = setTimeout(() => {          
-          this.searchData(1)
-        }, 1500)
+          
+          const pageNumber = 1
+          const begin = 0
+          const end = this.state.limit
 
+          this.searchData(pageNumber, begin, end)
+        }, 1000)
       } else {      
         this.setState({ 
           movie: [],
@@ -81,7 +105,7 @@ class Home extends Component{
     })
   }
 
-  searchData = async (pageNumber) => {            
+  searchData = async (pageNumber, begin, end) => {            
     let url = new URL("https://api.themoviedb.org/3/search/movie?"),
         params = {
           api_key: "1b81b68eab6ab1714626504a1e36be3a", 
@@ -95,9 +119,24 @@ class Home extends Component{
     try {
       const response = await fetch(url);
       const dataMovie = await response.json();      
+      let allMoviesListAux = dataMovie.results
+      let currentPageAux = pageNumber
+      
+      if(pageNumber > 1){
+        currentPageAux = this.state.currentPage + 1
+        allMoviesListAux = [...this.state.allMoviesList, ...dataMovie.results]
+      }
+
+      let movieElements = allMoviesListAux.slice(begin, end).map(item => {
+        return item
+      })
       
       this.setState({
-        movie: dataMovie.results,
+        allMoviesList: allMoviesListAux,
+        movie: movieElements,
+        total: dataMovie.total_results,
+        currentPage: currentPageAux,
+        apiPageRequest: this.state.apiPageRequest + 1,
         loading: false,
         error: false,
         find: true,
@@ -110,13 +149,44 @@ class Home extends Component{
     }
   }
 
+  handlePageChange = (pageNumber, e) => {
+    
+    const begin = this.state.limit * (pageNumber - 1)
+    const end = (this.state.limit * (pageNumber - 1)) + this.state.limit
+    
+    if(this.state.allMoviesList.length === begin){      
+      this.searchData(this.state.apiPageRequest + 1, begin, end)
+    } else {
+      let movieElements = this.state.allMoviesList.slice(begin, end).map(item => {
+        return item
+      })
+      
+      this.setState({
+        currentPage: pageNumber,
+        movie: movieElements
+      });
+    }
+  };
+
   render(){
-    const { loading, movie, find, error } = this.state;
+    const { 
+      loading, 
+      movie, 
+      find, 
+      error, 
+      currentPage, 
+      limit,
+      pageCount, 
+      total } = this.state;
     
     return(
       <div>
         <SearchBox>
-          <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />        
+          <SearchBar 
+            onChange={this.getValueSearch}
+            onKeyDown={this.handleInputEnter}            
+            placeholder="Busque um filme por nome ou gênero..." 
+          />        
         </SearchBox>
 
         {loading && (
@@ -140,14 +210,85 @@ class Home extends Component{
         }
 
         {movie.length > 0 && find &&
-          <div>
-            <ul>
-              <li><div onClick={() => this.searchData(1)}>1</div></li>
-              <li><div onClick={() => this.searchData(2)}>2</div></li>
-              <li><div onClick={() => this.searchData(3)}>3</div></li>
-              <li><div onClick={() => this.searchData(4)}>4</div></li>
-            </ul>
-          </div>
+
+        <Pagination
+          total={total}
+          limit={limit}
+          pageCount={pageCount}
+          currentPage={currentPage}
+        >
+          {({
+            pages,
+            currentPage,
+            hasNextPage,
+            hasPreviousPage,
+            previousPage,
+            nextPage,
+            totalPages,
+            getPageItemProps
+          }) => (
+            <div>
+              <button
+                {...getPageItemProps({
+                  pageValue: 1,
+                  onPageChange: this.handlePageChange
+                })}
+              >
+                first
+              </button>
+ 
+              {hasPreviousPage && (
+                <button
+                  {...getPageItemProps({
+                    pageValue: previousPage,
+                    onPageChange: this.handlePageChange
+                  })}
+                >
+                  {'<'}
+                </button>
+              )}
+ 
+              {pages.map(page => {
+                let activePage = null;
+                if (currentPage === page) {
+                  activePage = { backgroundColor: '#fdce09' };
+                }
+                return (
+                  <button
+                    {...getPageItemProps({
+                      pageValue: page,
+                      key: page,
+                      style: activePage,
+                      onPageChange: this.handlePageChange
+                    })}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+ 
+              {hasNextPage && (
+                <button
+                  {...getPageItemProps({
+                    pageValue: nextPage,
+                    onPageChange: this.handlePageChange
+                  })}
+                >
+                  {'>'}
+                </button>
+              )}
+ 
+              <button
+                {...getPageItemProps({
+                  pageValue: totalPages,
+                  onPageChange: this.handlePageChange
+                })}
+              >
+                last
+              </button>
+            </div>
+          )}
+        </Pagination>
         }
 
         {find && movie.length === 0 &&
