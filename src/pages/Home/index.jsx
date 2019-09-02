@@ -36,12 +36,37 @@ const ContainerLoading = styled.div`
   text-align: center;
   margin-top: 150px;
 `
-
 const ErrorBox = styled.div`
   margin: 50px 0;
   font-size: 20px;  
   text-align: center;
 ` 
+const PaginationBox = styled.div`
+  width: 100%;  
+  text-align: center;
+` 
+
+const PaginationDot = styled.button`
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #116193;
+  font-size: 28px;
+  padding: 0 12px
+`
+
+const PaginationItem = styled.button`
+  font-family: 'Lato', sans-serif;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #116193;
+  font-size: 18px;
+  padding: 0 12px;
+  :focus{   
+    outline: none;
+  }
+`
 
 class Home extends Component{
   constructor(props){
@@ -56,7 +81,7 @@ class Home extends Component{
       error: false,
       find: false,    
       limit: 5,
-      pageCount: 3,
+      pageCount: 5,
       total: 0,
       apiPageRequest: 0,
       currentPage: 1
@@ -149,7 +174,17 @@ class Home extends Component{
     }
   }
 
+  handleScroll = () => {    
+      var doc = document.documentElement;
+      var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+      if (top > 0) {
+        window.scrollTo(0, top - 60)
+        setTimeout(this.handleScroll, 1)
+      }    
+  }
+
   handlePageChange = (pageNumber, e) => {
+    this.handleScroll()
     
     const begin = this.state.limit * (pageNumber - 1)
     const end = (this.state.limit * (pageNumber - 1)) + this.state.limit
@@ -210,85 +245,78 @@ class Home extends Component{
         }
 
         {movie.length > 0 && find &&
-
-        <Pagination
-          total={total}
-          limit={limit}
-          pageCount={pageCount}
-          currentPage={currentPage}
-        >
-          {({
-            pages,
-            currentPage,
-            hasNextPage,
-            hasPreviousPage,
-            previousPage,
-            nextPage,
-            totalPages,
-            getPageItemProps
-          }) => (
-            <div>
-              <button
-                {...getPageItemProps({
-                  pageValue: 1,
-                  onPageChange: this.handlePageChange
-                })}
-              >
-                first
-              </button>
- 
-              {hasPreviousPage && (
-                <button
-                  {...getPageItemProps({
-                    pageValue: previousPage,
-                    onPageChange: this.handlePageChange
-                  })}
-                >
-                  {'<'}
-                </button>
-              )}
- 
-              {pages.map(page => {
-                let activePage = null;
-                if (currentPage === page) {
-                  activePage = { backgroundColor: '#fdce09' };
-                }
-                return (
-                  <button
+        <PaginationBox>
+          <Pagination
+            total={total}
+            limit={limit}
+            pageCount={pageCount}
+            currentPage={currentPage}
+          >
+            {({
+              pages,
+              currentPage,
+              hasNextPage,
+              hasPreviousPage,
+              previousPage,
+              nextPage,
+              totalPages,
+              getPageItemProps
+            }) => (
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}> 
+                {hasPreviousPage && (
+                  <PaginationDot
                     {...getPageItemProps({
-                      pageValue: page,
-                      key: page,
-                      style: activePage,
+                      pageValue: previousPage,
                       onPageChange: this.handlePageChange
                     })}
                   >
-                    {page}
-                  </button>
-                );
-              })}
- 
-              {hasNextPage && (
-                <button
-                  {...getPageItemProps({
-                    pageValue: nextPage,
-                    onPageChange: this.handlePageChange
-                  })}
-                >
-                  {'>'}
-                </button>
-              )}
- 
-              <button
-                {...getPageItemProps({
-                  pageValue: totalPages,
-                  onPageChange: this.handlePageChange
+                    {'<'}
+                  </PaginationDot>
+                )}
+  
+                {pages.map(page => {
+                  let activePage = null;
+                  if (currentPage === page) {
+                    activePage = {                       
+                      backgroundColor: '#116193',
+                      borderRadius: '50%',
+                      width: '50px',
+                      height: '50px',
+                      lineHeight: '1px',
+                      fontSize: '26px',
+                      color: '#00e8e4',
+                      boxSshadow: '0px 0px 0px 5px #116193',
+                      border: '3px solid #00e8e4',                      
+                    };
+                  }
+                  return (
+                    <PaginationItem
+                      {...getPageItemProps({
+                        pageValue: page,
+                        key: page,
+                        style: activePage,
+                        onPageChange: this.handlePageChange
+                      })}
+                    >
+                      {page}
+                    </PaginationItem>
+                  );
                 })}
-              >
-                last
-              </button>
-            </div>
-          )}
-        </Pagination>
+  
+                {hasNextPage && (
+                  <PaginationDot
+                    {...getPageItemProps({
+                      pageValue: nextPage,
+                      onPageChange: this.handlePageChange
+                    })}
+                  >
+                    {'>'}
+                  </PaginationDot>
+                )}
+              </div>
+            )}
+          </Pagination>
+          </PaginationBox>
         }
 
         {find && movie.length === 0 &&
