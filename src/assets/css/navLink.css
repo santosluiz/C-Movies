@@ -1,9 +1,17 @@
-.titleHeader, .readMore, .cardLink{
+.titleHeader, .readMore, .cardLink, .backButton{
   text-decoration: none;
 }
 
 .cardLink{
   color: #000;
+}
+
+.backButton{
+  font-size: 18px;  
+  padding: 0px 8px;
+  color: #116193;
+  transition: 0.5s all;
+  border-bottom: 1px solid #fff;
 }
 
 .titleHeader{
@@ -18,22 +26,27 @@
 .titleHeader:link{
   color: #00e8e4;
 }
-.readMore:link {
+.readMore:link, .backButton:visited {
   color: #116193;
 }
 
 .titleHeader:visited{
   color: #00e8e4;
 }
-.readMore:visited {
+.readMore:visited, .backButton:visited {
   color: #116193;
 }
+
 
 .titleHeader:hover{
   color: #00e8e4;
 }
 .readMore:hover {
   color: #116193;
+}
+
+.backButton:hover{
+  border-bottom: 1px solid #116193;
 }
 
 .titleHeader:active{

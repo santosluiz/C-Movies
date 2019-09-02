@@ -4,9 +4,14 @@ import { device } from '../../helper/device';
 import Loading from '../../components/Loading';
 import { CardMoviePage } from '../../components/CardMoviePage';
 import { TrailerMovieContent } from '../../components/TrailerMovieContent';
+import { BackButton } from '../../components/BackButton';
+
 
 const Main = styled.div`
   width: 100%;    
+`
+const BackButtonBox = styled.div`
+  margin-bottom: 20px;
 `
 const ContainerLoading = styled.div`
   width: 100%;
@@ -135,6 +140,11 @@ class Movie extends Component {
     const { movie, trailerUrl, loadingMovie, loadingTrailer, hasTrailer, error } = this.state    
     return(
       <Main>
+
+        <BackButtonBox>
+          <BackButton />
+        </BackButtonBox>
+
         {loadingMovie && 
           <ContainerLoading>
             <Loading />
