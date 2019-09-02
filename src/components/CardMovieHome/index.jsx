@@ -95,7 +95,7 @@ export class CardMovieHome extends Component{
           </CardDate>
 
           <CardDescription>
-            <p>{handleSynopsis(this.props.movie.overview)}</p>            
+            <p>{handleSynopsis(this.props.content.overview)}</p>            
           </CardDescription>
 
           <CardReadMore>

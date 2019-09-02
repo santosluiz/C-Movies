@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Loading from '../Loading';
+import { device } from '../../helper/device';
 import { CardMoviePage } from '../CardMoviePage';
 import { TrailerMovieContent } from '../TrailerMovieContent';
 
-// import { NavLink } from 'react-router-dom';
 
 const Main = styled.div`
   width: 100%;    
@@ -17,6 +17,10 @@ const ContainerLoading = styled.div`
 const MovieTrailer = styled.div`
   width: 100%;
   margin: 40px 0;
+  box-sizing: border-box;
+  @media ${device.tablet} { 
+    padding: 0 30px;
+  }
 `
 const HasNoTrailer = styled.div`
   text-align: center;
@@ -33,7 +37,8 @@ class Movie extends Component {
     urlImage: "https://image.tmdb.org/t/p/w300/",
   }
 
-  componentDidMount(){     
+  componentDidMount(){      
+    window.scrollTo(0,0)
     const currentUrl = window.location.href
     const id = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
@@ -139,11 +144,12 @@ class Movie extends Component {
 
         {hasTrailer ? (
           <MovieTrailer>
+            <h3>Assista ao trailer:</h3>
             <TrailerMovieContent trailerUrl={trailerUrl} />
           </MovieTrailer>
         ) : (
           <HasNoTrailer>            
-            <p>Este filme não possui trailer, <a href={this.handleNoHasTrailer(movie.title)} target="_blank">clique aqui para pesquisar</a></p>
+            <p>Este filme não possui trailer, <a href={this.handleNoHasTrailer(movie.title)} target="_blank" without rel="noopener noreferrer">clique aqui para pesquisar</a></p>
           </HasNoTrailer>
         )
         }

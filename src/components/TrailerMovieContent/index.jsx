@@ -3,6 +3,7 @@ import React from 'react';
 export const TrailerMovieContent = (props) => {
   return(
     <iframe 
+      title="Trailer"
       style={{width: '100%', height: '600px'}}
       width="560" 
       height="315" 

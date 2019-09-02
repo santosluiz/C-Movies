@@ -7,6 +7,9 @@ import { handleSynopsis, handleConvertDate, handleGetImageCard, handleTranslateS
 
 const MovieBox = styled.div`  
   background: #f2f2f2;
+  @media ${device.tablet} {  
+    background: #fff;
+  }
 `
 const Title = styled.div`
   display: flex;  
@@ -29,13 +32,35 @@ const Date = styled.span`
 const MovieData = styled.div`
   width: 100%;
   display: flex;
+  @media ${device.tablet} {  
+    flex-direction: column-reverse;
+  }
 `
 const MovieContent = styled.div`
   padding: 10px 30px;
+  box-sizing: border-box;
   width: calc(100% - 400px);
+  @media ${device.tablet} {  
+    width: 100%;
+    background: #f2f2f2;    
+    position: relative;
+  }
 `
-const MovieImage = styled.div`  
+const MovieImageBox = styled.div`  
   width: 400px;
+  @media ${device.tablet} {      
+    margin: 15px auto;
+    width: 300px;
+  }
+`
+const MovieImage = styled.img`  
+  width: 100%;
+  height: 100%;
+  @media ${device.tablet} {      
+    -webkit-box-shadow: 4px 9px 26px -13px rgba(0,0,0,0.75);
+    -moz-box-shadow: 4px 9px 26px -13px rgba(0,0,0,0.75);
+    box-shadow: 4px 9px 26px -13px rgba(0,0,0,0.75);
+  }
 `
 const MovieH2 = styled.h2`
   color: #4885aa;
@@ -45,6 +70,16 @@ const MovieH2 = styled.h2`
 `
 const MovieH3 = styled.h3`
   color: #4885aa;
+  @media ${device.tablet} {   
+    font-size: 22px;
+    margin: 0 0 5px 0;
+  }
+`
+const MovieInfoContent = styled.p`  
+  @media ${device.tablet} {   
+    font-size: 18px;
+    margin: 0;
+  }
 `
 const HR = styled.hr`
   width: 100%;
@@ -52,14 +87,29 @@ const HR = styled.hr`
   border: none;
   background: #79edeb;
 `
+const SynopsisText = styled.p`
+  @media ${device.tablet} {       
+    font-size: 20px;
+  }
+`
 const MovieInfo = styled.div`
   display: flex;
   justify-content: space-around;
+  @media ${device.tablet} {  
+    flex-direction: column;
+  }
 `
+const MovieInfoItem = styled.div`  
+  margin: 16px 0;
+  text-align: center;
+` 
 const MovieCategorie = styled.div`
   width: 100%;
   display: flex;
   margin: 22px 0;
+  @media ${device.tablet} {  
+    flex-wrap: wrap;
+  }
 `
 const MovieCategorieItem = styled.span`
   background: #fff;
@@ -69,10 +119,20 @@ const MovieCategorieItem = styled.span`
   margin-right: 5px;
   color: #5d92b5;  
   font-weight: 500;
+  text-align: center;
+  @media ${device.tablet} {  
+    font-size: 23px;
+    margin: 0px 8px 8px 0px;
+  }
 `
 const PopularityBox = styled.div`
   display: flex;
   justify-content: flex-end;
+  @media ${device.tablet} {      
+    position: absolute;
+    top: -105px;
+    right: 30px;
+  }
 `
 
 export class CardMoviePage extends Component{
@@ -100,37 +160,37 @@ export class CardMoviePage extends Component{
           <div>
             <MovieH2>Sinopse</MovieH2>
             <HR />
-            <p>{handleSynopsis(this.props.movie.overview)}</p>
+            <SynopsisText>{handleSynopsis(this.props.movie.overview)}</SynopsisText>
           </div>
 
           <div>
             <MovieH2>Informações</MovieH2>
             <HR />
             <MovieInfo>
-              <div>
+              <MovieInfoItem>
                 <MovieH3>Situação</MovieH3>
-                <p>{handleTranslateStatusMovie(this.props.movie.status)}</p>
-              </div>
+                <MovieInfoContent>{handleTranslateStatusMovie(this.props.movie.status)}</MovieInfoContent>
+              </MovieInfoItem>
 
-              <div>
+              <MovieInfoItem>
                 <MovieH3>Idioma</MovieH3>
-                <p>{handleTranslateLanguage(this.props.movie.original_language)}</p>
-              </div>
+                <MovieInfoContent>{handleTranslateLanguage(this.props.movie.original_language)}</MovieInfoContent>
+              </MovieInfoItem>
 
-              <div>
+              <MovieInfoItem>
                 <MovieH3>Duração</MovieH3>
-                <p>{handleConvertRuntime(this.props.movie.runtime)}</p>
-              </div>
+                <MovieInfoContent>{handleConvertRuntime(this.props.movie.runtime)}</MovieInfoContent>
+              </MovieInfoItem>
 
-              <div>
+              <MovieInfoItem>
                 <MovieH3>Orçamento</MovieH3>
-                <p>${this.handleConvertCurrency(this.props.movie.budget)}</p>
-              </div>
+                <MovieInfoContent>${this.handleConvertCurrency(this.props.movie.budget)}</MovieInfoContent>
+              </MovieInfoItem>
 
-              <div>
+              <MovieInfoItem>
                 <MovieH3>Receita</MovieH3>
-                <p>${this.handleConvertCurrency(this.props.movie.revenue)}</p>
-              </div>                                                                   
+                <MovieInfoContent>${this.handleConvertCurrency(this.props.movie.revenue)}</MovieInfoContent>
+              </MovieInfoItem>                                                                   
             </MovieInfo>              
           </div>
 
@@ -147,13 +207,12 @@ export class CardMoviePage extends Component{
           </PopularityBox>
         </MovieContent>
 
-        <MovieImage>
-          <img 
+        <MovieImageBox>
+          <MovieImage          
             src={handleGetImageCard(urlImage, this.props.movie.poster_path)} 
-            alt={this.props.movie.title} 
-            style={{width: "100%", height: "100%"}}
-          />
-        </MovieImage>          
+            alt={this.props.movie.title}             
+          />        
+        </MovieImageBox>        
       </MovieData>        
     </MovieBox>
     )

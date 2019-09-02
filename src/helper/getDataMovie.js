@@ -52,10 +52,9 @@ export const handleGetPopularity = (popularity) => {
 export const handleTranslateLanguage = (language) => {    
   let langMovie = "--"
   
-  countries.map(item => {
+  countries.forEach(item => {    
     if(item.iso_639_1 === language){
-      langMovie = item.portugues_name
-      
+      langMovie = item.portugues_name      
     }
   })
 
@@ -65,7 +64,7 @@ export const handleTranslateLanguage = (language) => {
 export const handleTranslateStatusMovie = (status) => {    
   let statusPT = "--"
   
-  statusMovie.map(item => {
+  statusMovie.forEach(item => {
     if(item.status_english === status){
       statusPT = item.status_portuguese      
     }
