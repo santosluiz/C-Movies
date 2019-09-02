@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Loading from '../Loading';
 import { device } from '../../helper/device';
-import { CardMoviePage } from '../CardMoviePage';
-import { TrailerMovieContent } from '../TrailerMovieContent';
+import Loading from '../../components/Loading';
+import { CardMoviePage } from '../../components/CardMoviePage';
+import { TrailerMovieContent } from '../../components/TrailerMovieContent';
 
 
 const Main = styled.div`

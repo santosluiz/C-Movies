@@ -12,9 +12,15 @@ const CardMovie = styled.div`
   -webkit-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
   box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
+  transition: 0.4s all;
+  :hover{
+    transform: translateY(-4px);
+  }
+
   @media ${device.tablet} {  
     flex-direction: column;
     align-items: center;
+    box-shadow: none;
   }
 `
 const MovieImage = styled.div`
@@ -26,6 +32,9 @@ const CardContent = styled.div`
   background: #ebebeb;
   @media ${device.tablet} {  
     width: 100%;
+    -webkit-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
+    box-shadow: 0px 5px 30px -17px rgba(0,0,0,0.75);
   }
 `
 const CardTopBar = styled.div`
@@ -44,8 +53,8 @@ const CardH1 = styled.h1`
 `
 const CardBoxPopularity = styled.div`
   position: absolute;
-  top: 50px;
-  left: 11px;
+  top: 50px;  
+  left: 14px;
 `
 const CardDate = styled.p`
   margin: 0 0 0 100px;
@@ -58,6 +67,10 @@ const CardDescription = styled.div`
   margin: 35px 20px;
   font-family: 'Lato',sans-serif;
   font-weight: 400;
+  @media ${device.tablet}{
+    margin: 35px 30px;
+    text-align: justify;
+  }
 }
 `
 const CardReadMore = styled.div`
@@ -75,21 +88,22 @@ export class CardMovieHome extends Component{
     const { urlImage } = this.state
 
     return(
+      <NavLink class="cardLink" to={`movie/${this.props.content.id}`}>
+      
       <CardMovie key={this.props.content.id}>
-
         <MovieImage>
           <img src={handleGetImageCard(urlImage, this.props.content.poster_path)} alt="" style={{width: '100%', height: '100%'}}/>
         </MovieImage>
-
-        <CardContent>
-          <CardTopBar>
+      
+        <CardContent>        
+          <CardTopBar>            
             <CardH1>{this.props.content.title}</CardH1>
           
             <CardBoxPopularity>
               <Popularity size="small" content={this.props.content.popularity}></Popularity>                                
             </CardBoxPopularity>
           </CardTopBar>
-
+                  
           <CardDate>                
             {handleConvertDate(this.props.content.release_date)}
           </CardDate>
@@ -99,11 +113,12 @@ export class CardMovieHome extends Component{
           </CardDescription>
 
           <CardReadMore>
-            <NavLink to={`movie/${this.props.content.id}`}><p>SAIBA MAIS!</p></NavLink>
+            <NavLink class="readMore" to={`movie/${this.props.content.id}`}><p>SAIBA MAIS!</p></NavLink>
           </CardReadMore>
         </CardContent>
+      </CardMovie>
 
-      </CardMovie>      
+      </NavLink>    
     )
   }
 }

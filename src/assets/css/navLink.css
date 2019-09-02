@@ -1,23 +1,44 @@
-.titleHeader{
-  color: #00e8e4;
+.titleHeader, .readMore, .cardLink{
   text-decoration: none;
 }
 
-.titleHeader:link {
-  color: #00e8e4;
+.cardLink{
+  color: #000;
 }
 
-/* visited link */
-.titleHeader:visited {
-  color: #00e8e4;
+.titleHeader{
+  color: #00e8e4; 
 }
 
-/* mouse over link */
-.titleHeader:hover {
-  color: #00e8e4;
+.readMore{
+  color: #116193;
+  font-size: 17px;
 }
 
-/* selected link */
-.titleHeader:active {
+.titleHeader:link{
   color: #00e8e4;
+}
+.readMore:link {
+  color: #116193;
+}
+
+.titleHeader:visited{
+  color: #00e8e4;
+}
+.readMore:visited {
+  color: #116193;
+}
+
+.titleHeader:hover{
+  color: #00e8e4;
+}
+.readMore:hover {
+  color: #116193;
+}
+
+.titleHeader:active{
+  color: #00e8e4;
+}
+.readMore:active {
+  color: #116193;
 }

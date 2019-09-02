@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
-import Loading from '../Loading';
-import { CardMovieHome } from '../CardMovieHome';
+import { device } from '../../helper/device';
+import Loading from '../../components/Loading';
+import { CardMovieHome } from '../../components/CardMovieHome';
+
+const SearchBox = styled.div`
+  @media ${device.tablet}{
+    padding: 0 30px;
+  }
+`
 
 const SearchBar = styled.input.attrs({  
   type: "text",
@@ -23,6 +30,10 @@ const SearchBar = styled.input.attrs({
   ::placeholder {
     color: #89adc4;
   }
+  @media ${device.tablet} {  
+    width: calc(100% - 17px);    
+  }
+  
 `
 const ContainerLoading = styled.div`
   width: 100%;
@@ -90,7 +101,10 @@ class Home extends Component{
     
     return(
       <div>
-        <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />        
+        <SearchBox>
+          <SearchBar onChange={this.getValueSearch} placeholder="Busque um filme por nome ou gênero..." />        
+        </SearchBox>
+
         {loading && (
           <ContainerLoading>
             <Loading />

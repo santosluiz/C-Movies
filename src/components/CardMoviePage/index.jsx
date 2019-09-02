@@ -139,8 +139,8 @@ const PopularityBox = styled.div`
   @media ${device.tablet} {      
     position: absolute;
     left: 0;
-    right: -30px;
-    bottom: -40px;
+    right: -22px;
+    bottom: -33px;
   }
   @media ${device.mobileS} {      
     right: -2px;
@@ -155,7 +155,6 @@ export class CardMoviePage extends Component{
   handleConvertCurrency = (amount) => {
     return (amount).toLocaleString('pt-BR') + ",00"
   }
-
 
   render(){
     const { urlImage } = this.state
@@ -213,8 +212,6 @@ export class CardMoviePage extends Component{
               )
             })}
           </MovieCategorie>
-
-
         </MovieContent>
 
         <MovieImageBox>
@@ -226,6 +223,7 @@ export class CardMoviePage extends Component{
             <Popularity size="big" content={this.props.movie.popularity}></Popularity>                                  
           </PopularityBox>
         </MovieImageBox>        
+        
       </MovieData>        
     </MovieBox>
     )

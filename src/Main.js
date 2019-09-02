@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route } from 'react-router-dom'
-import Home from "./components/Home";
-import Movie from "./components/Movie";
+import Home from "./pages/Home";
+import Movie from "./pages/Movie";
 
 const Main = () => (
   <main style={{margin: '60px 0'}}>
