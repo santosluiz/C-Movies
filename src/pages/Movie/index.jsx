@@ -104,7 +104,7 @@ class Movie extends Component {
       if(dataTrailer.results.length > 0){
         
         let keyTrailer = ""
-        dataTrailer.results.map(item => { 
+        dataTrailer.results.forEach(item => { 
          keyTrailer = item.key
         })
 

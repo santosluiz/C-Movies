@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 import { Popularity } from '../Popularity';
 import { device } from '../../helper/device';
 import { handleSynopsis, handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage, handleConvertRuntime } from '../../helper/getDataMovie.js';

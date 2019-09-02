@@ -91,7 +91,7 @@ export class CardMovieHome extends Component{
     const { urlImage } = this.state
 
     return(
-      <NavLink class="cardLink" to={`movie/${this.props.content.id}`}>
+      <NavLink className="cardLink" to={`movie/${this.props.content.id}`}>
       
       <CardMovie key={this.props.content.id}>
         <MovieImage>
@@ -116,7 +116,7 @@ export class CardMovieHome extends Component{
           </CardDescription>
 
           <CardReadMore>
-            <NavLink class="readMore" to={`movie/${this.props.content.id}`}><p>SAIBA MAIS!</p></NavLink>
+            <p>SAIBA MAIS!</p>
           </CardReadMore>
         </CardContent>
       </CardMovie>
