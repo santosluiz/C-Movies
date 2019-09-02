@@ -15,7 +15,7 @@ const CardPopularitySmall = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 0;  
+  line-height: 0;
   box-shadow: 0px 0px 0px 5px rgb(17, 97, 147);
   -moz-box-shadow: 0px 0px 0px 5px rgb(17, 97, 147);
   -webkit-box-shadow: 0px 0px 0px 5px rgb(17, 97, 147);
@@ -33,12 +33,12 @@ const CardPopularityBig = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 0;  
+  line-height: 0;
   box-shadow: 0px 0px 0px 5px rgb(17, 97, 147);
   -moz-box-shadow: 0px 0px 0px 5px rgb(17, 97, 147);
   -webkit-box-shadow: 0px 0px 0px 5px rgb(17, 97, 147);
   -o-box-shadow: 0px 0px 0px 5px rgb(17, 97, 147);
-  @media ${device.mobileS} {      
+  @media ${device.mobileS} {
     width: 78px;
     height: 78px;
     font-size: 29px;

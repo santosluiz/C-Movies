@@ -2,17 +2,17 @@ import imgDefaultDesktop from '../assets/img/imgDefaultDesktop.jpg'
 import { countries } from './countriesArray.js'
 import { statusMovie } from './statusMovieArray.js'
 
-export const handleSynopsis = (synopsis) => {   
+export const handleSynopsis = (synopsis) => {
   if(synopsis === ""){
     return "Não há sinopse disponível para este filme."
   }
 
-  return synopsis  
+  return synopsis
 }
 
 export const handleGetImageCard = (urlImage, pathImage) => {
   let path = ""
-  
+
   if(pathImage){
     path = urlImage + pathImage
   } else {
@@ -23,22 +23,22 @@ export const handleGetImageCard = (urlImage, pathImage) => {
 
 export const handleConvertDate = (date) => {
   let today = new Date(date)
-  let dd = today.getDate(); 
-  let mm = today.getMonth() + 1; 
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1;
   let yyyy = today.getFullYear();
 
-  if (dd < 10) { 
-    dd = '0' + dd; 
-  } 
-  if (mm < 10) { 
-    mm = '0' + mm; 
-  } 
-  today = dd + '/' + mm + '/' + yyyy; 
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  today = dd + '/' + mm + '/' + yyyy;
 
   return today;
 }
 
-export const handleGetPopularity = (popularity) => {  
+export const handleGetPopularity = (popularity) => {
   let value = ""
   if(popularity > 1){
     value = ~~popularity + "%"
@@ -46,27 +46,27 @@ export const handleGetPopularity = (popularity) => {
     value = popularity.toFixed(1) + "%"
   }
 
-  return value  
+  return value
 }
 
-export const handleTranslateLanguage = (language) => {    
+export const handleTranslateLanguage = (language) => {
   let langMovie = "--"
-  
-  countries.forEach(item => {    
+
+  countries.forEach(item => {
     if(item.iso_639_1 === language){
-      langMovie = item.portugues_name      
+      langMovie = item.portugues_name
     }
   })
 
-  return langMovie  
+  return langMovie
 }
 
-export const handleTranslateStatusMovie = (status) => {    
+export const handleTranslateStatusMovie = (status) => {
   let statusPT = "--"
-  
+
   statusMovie.forEach(item => {
     if(item.status_english === status){
-      statusPT = item.status_portuguese      
+      statusPT = item.status_portuguese
     }
   })
 
@@ -78,7 +78,7 @@ export const handleConvertRuntime = (runtime) => {
   let m = runtime % 60;
   h = h < 10 ? '0' + h : h;
   m = m < 10 ? '0' + m : m;
-  
+
   return `${h}h ${m}min`
 }
 

@@ -5,19 +5,19 @@ const loaderKeyf = keyframes`
   0% {
     transform: rotate(0deg);
   }
-  
+
   25% {
     transform: rotate(180deg);
   }
-  
+
   50% {
     transform: rotate(180deg);
   }
-  
+
   75% {
     transform: rotate(360deg);
   }
-  
+
   100% {
     transform: rotate(360deg);
   }
@@ -27,19 +27,19 @@ const loaderInnerKeyf = keyframes`
   0% {
     height: 0%;
   }
-  
+
   25% {
     height: 0%;
   }
-  
+
   50% {
     height: 100%;
   }
-  
+
   75% {
     height: 100%;
   }
-  
+
   100% {
     height: 0%;
   }
@@ -59,7 +59,7 @@ const Loader = styled.span`
   height: 45px;
   position: relative;
   border: 4px solid #00e5e2;
-  top: 50%;  
+  top: 50%;
   animation: ${loaderAnim};
 `
 const LoaderInner = styled.span`
@@ -71,7 +71,7 @@ const LoaderInner = styled.span`
 `
 const Loading = () => (
   <Loader>
-    <LoaderInner />  
+    <LoaderInner />
   </Loader>
 );
 

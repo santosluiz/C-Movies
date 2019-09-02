@@ -8,7 +8,7 @@ import { BackButton } from '../../components/BackButton';
 
 
 const Main = styled.div`
-  width: 100%;    
+  width: 100%;
 `
 const BackButtonBox = styled.div`
   margin-bottom: 20px;
@@ -22,7 +22,7 @@ const MovieTrailer = styled.div`
   width: 100%;
   margin: 40px 0;
   box-sizing: border-box;
-  @media ${device.tablet} { 
+  @media ${device.tablet} {
     padding: 0 30px;
   }
 `
@@ -31,14 +31,14 @@ const HasNoTrailer = styled.div`
 `
 const ErrorBox = styled.div`
   margin: 50px 0;
-  font-size: 20px;  
+  font-size: 20px;
   text-align: center;
-` 
+`
 
 class Movie extends Component {
-  state = {    
-    movie: [],    
-    idMovie: "",    
+  state = {
+    movie: [],
+    idMovie: "",
     trailerUrl: "",
     loadingMovie: false,
     loadingTrailer: false,
@@ -48,7 +48,7 @@ class Movie extends Component {
     urlImage: "https://image.tmdb.org/t/p/w300/",
   }
 
-  componentDidMount(){      
+  componentDidMount(){
     window.scrollTo(0,0)
     const currentUrl = window.location.href
     const id = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
@@ -57,29 +57,29 @@ class Movie extends Component {
       idMovie: id
     }, () => {
       this.loadData(this.state.idMovie)
-      this.loadTrailer(this.state.idMovie)    
-    })    
+      this.loadTrailer(this.state.idMovie)
+    })
   }
 
-  loadData = async (id) => {    
-    this.setState({      
+  loadData = async (id) => {
+    this.setState({
       loadingMovie: true,
     })
 
     let url = new URL(`https://api.themoviedb.org/3/movie/${id}?`),
-    params = {      
+    params = {
       language: "pt-BR",
-      api_key: "1b81b68eab6ab1714626504a1e36be3a", 
+      api_key: "1b81b68eab6ab1714626504a1e36be3a",
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
     try {
       const response = await fetch(url);
-      const dataMovie = await response.json();      
-      
+      const dataMovie = await response.json();
+
       this.setState({
-        movie: dataMovie, 
-        loadingMovie: false,               
+        movie: dataMovie,
+        loadingMovie: false,
         errorMovie: false
       })
     } catch(err) {
@@ -90,26 +90,26 @@ class Movie extends Component {
     }
   }
 
-  loadTrailer = async (id) => {   
+  loadTrailer = async (id) => {
     this.setState({
       loadingTrailer: true,
     })
 
     let url = new URL(`https://api.themoviedb.org/3/movie/${id}/videos?`),
-    params = {      
-      api_key: "1b81b68eab6ab1714626504a1e36be3a", 
+    params = {
+      api_key: "1b81b68eab6ab1714626504a1e36be3a",
       language: "pt-BR",
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
     try {
       const response = await fetch(url);
-      const dataTrailer = await response.json();      
+      const dataTrailer = await response.json();
 
       if(dataTrailer.results.length > 0){
-        
+
         let keyTrailer = ""
-        dataTrailer.results.forEach(item => { 
+        dataTrailer.results.forEach(item => {
          keyTrailer = item.key
         })
 
@@ -129,15 +129,15 @@ class Movie extends Component {
         errorTrailer: true,
       })
       console.log('fetch failed', err);
-    }    
+    }
   }
 
   handleNoHasTrailer = (title) => {
-    return "https://www.youtube.com/results?search_query=" + title    
+    return "https://www.youtube.com/results?search_query=" + title
   }
 
-  render(){    
-    const { movie, trailerUrl, loadingMovie, loadingTrailer, hasTrailer, error } = this.state    
+  render(){
+    const { movie, trailerUrl, loadingMovie, loadingTrailer, hasTrailer, error } = this.state
     return(
       <Main>
 
@@ -145,7 +145,7 @@ class Movie extends Component {
           <BackButton />
         </BackButtonBox>
 
-        {loadingMovie && 
+        {loadingMovie &&
           <ContainerLoading>
             <Loading />
           </ContainerLoading>
@@ -173,7 +173,7 @@ class Movie extends Component {
             <TrailerMovieContent trailerUrl={trailerUrl} />
           </MovieTrailer>
         ) : (
-          <HasNoTrailer>            
+          <HasNoTrailer>
             <p>Este filme não possui trailer, <a href={this.handleNoHasTrailer(movie.title)} target="_blank" without rel="noopener noreferrer">clique aqui para pesquisar</a></p>
           </HasNoTrailer>
         )

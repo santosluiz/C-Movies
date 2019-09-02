@@ -11,14 +11,13 @@ const Wrapper = styled.main`
     margin: 60px 0px;
   }
 `
-
 const Main = () => (
   <Wrapper>
-    <Switch>      
+    <Switch>
       <Route exact path='/' component={Home}/>
       <Route path='/movie' component={Movie}/>
     </Switch>
-  </Wrapper>  
+  </Wrapper>
 );
 
 export default Main;

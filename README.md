@@ -1,7 +1,7 @@
 This project have the objective to display movie from [TheMovieDB API](https://www.themoviedb.org/documentation/api).
 
 
-## How To Run The Project 
+## How To Run The Project
 
 Open your terminal and clone the project:
 

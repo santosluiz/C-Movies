@@ -4,14 +4,14 @@ import { Popularity } from '../Popularity';
 import { device } from '../../helper/device';
 import { handleSynopsis, handleConvertDate, handleGetImageCard, handleTranslateStatusMovie, handleTranslateLanguage, handleConvertRuntime } from '../../helper/getDataMovie.js';
 
-const MovieBox = styled.div`  
+const MovieBox = styled.div`
   background: #f2f2f2;
-  @media ${device.tablet} {  
+  @media ${device.tablet} {
     background: #fff;
   }
 `
 const Title = styled.div`
-  display: flex;  
+  display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -24,18 +24,18 @@ const Title = styled.div`
   }
 `
 const TitleH1 = styled.h1`
-  font-weight: 600;  
+  font-weight: 600;
   margin: 0;
   color: #196696;
 `
 const Date = styled.span`
-  font-size: 20px;  
+  font-size: 20px;
   color: #b4b4b4;
 `
 const MovieData = styled.div`
   width: 100%;
   display: flex;
-  @media ${device.tablet} {  
+  @media ${device.tablet} {
     flex-direction: column-reverse;
   }
 `
@@ -43,24 +43,24 @@ const MovieContent = styled.div`
   padding: 10px 30px;
   box-sizing: border-box;
   width: calc(100% - 400px);
-  @media ${device.tablet} {  
+  @media ${device.tablet} {
     width: 100%;
-    background: #f2f2f2;    
+    background: #f2f2f2;
     position: relative;
   }
 `
-const MovieImageBox = styled.div`  
+const MovieImageBox = styled.div`
   width: 400px;
   position: relative;
-  @media ${device.tablet} {      
+  @media ${device.tablet} {
     margin: 15px auto;
     width: 300px;
   }
 `
-const MovieImage = styled.img`  
+const MovieImage = styled.img`
   width: 100%;
   height: 100%;
-  @media ${device.tablet} {      
+  @media ${device.tablet} {
     -webkit-box-shadow: 4px 9px 26px -13px rgba(0,0,0,0.75);
     -moz-box-shadow: 4px 9px 26px -13px rgba(0,0,0,0.75);
     box-shadow: 4px 9px 26px -13px rgba(0,0,0,0.75);
@@ -74,13 +74,13 @@ const MovieH2 = styled.h2`
 `
 const MovieH3 = styled.h3`
   color: #4885aa;
-  @media ${device.tablet} {   
+  @media ${device.tablet} {
     font-size: 22px;
     margin: 0 0 5px 0;
   }
 `
-const MovieInfoContent = styled.p`  
-  @media ${device.tablet} {   
+const MovieInfoContent = styled.p`
+  @media ${device.tablet} {
     font-size: 18px;
     margin: 0;
   }
@@ -92,26 +92,26 @@ const HR = styled.hr`
   background: #79edeb;
 `
 const SynopsisText = styled.p`
-  @media ${device.tablet} {       
+  @media ${device.tablet} {
     font-size: 20px;
   }
 `
 const MovieInfo = styled.div`
   display: flex;
   justify-content: space-around;
-  @media ${device.tablet} {  
+  @media ${device.tablet} {
     flex-direction: column;
   }
 `
-const MovieInfoItem = styled.div`  
+const MovieInfoItem = styled.div`
   margin: 16px 0;
   text-align: center;
-` 
+`
 const MovieCategorie = styled.div`
   width: 100%;
   display: flex;
   margin: 22px 0;
-  @media ${device.tablet} {  
+  @media ${device.tablet} {
     flex-wrap: wrap;
   }
 `
@@ -121,10 +121,10 @@ const MovieCategorieItem = styled.span`
   border-radius: 45px;
   border: 1px solid #5d92b5;
   margin-right: 5px;
-  color: #5d92b5;  
+  color: #5d92b5;
   font-weight: 500;
   text-align: center;
-  @media ${device.tablet} {  
+  @media ${device.tablet} {
     font-size: 20px;
     margin: 0px 8px 8px 0px;
   }
@@ -135,15 +135,15 @@ const PopularityBox = styled.div`
   position: absolute;
   bottom: 15px;
   left: -150px;
-  @media ${device.tablet} {      
+  @media ${device.tablet} {
     position: absolute;
     left: 0;
     right: -22px;
     bottom: -33px;
   }
-  @media ${device.mobileS} {      
+  @media ${device.mobileS} {
     right: -2px;
-  }  
+  }
 `
 
 export class CardMoviePage extends Component{
@@ -163,8 +163,8 @@ export class CardMoviePage extends Component{
       <Title>
         <TitleH1>{this.props.movie.title}</TitleH1>
         <Date>{handleConvertDate(this.props.movie.release_date)}</Date>
-      </Title>        
-      
+      </Title>
+
       <MovieData>
         <MovieContent>
           <div>
@@ -200,8 +200,8 @@ export class CardMoviePage extends Component{
               <MovieInfoItem>
                 <MovieH3>Receita</MovieH3>
                 <MovieInfoContent>${this.handleConvertCurrency(this.props.movie.revenue)}</MovieInfoContent>
-              </MovieInfoItem>                                                                   
-            </MovieInfo>              
+              </MovieInfoItem>
+            </MovieInfo>
           </div>
 
           <MovieCategorie>
@@ -214,16 +214,16 @@ export class CardMoviePage extends Component{
         </MovieContent>
 
         <MovieImageBox>
-          <MovieImage          
-            src={handleGetImageCard(urlImage, this.props.movie.poster_path)} 
-            alt={this.props.movie.title}             
-          />        
+          <MovieImage
+            src={handleGetImageCard(urlImage, this.props.movie.poster_path)}
+            alt={this.props.movie.title}
+          />
           <PopularityBox>
-            <Popularity size="big" content={this.props.movie.popularity}></Popularity>                                  
+            <Popularity size="big" content={this.props.movie.popularity}></Popularity>
           </PopularityBox>
-        </MovieImageBox>        
-        
-      </MovieData>        
+        </MovieImageBox>
+
+      </MovieData>
     </MovieBox>
     )
   }

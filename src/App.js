@@ -17,7 +17,7 @@ class App extends Component{
           <Main />
         </Container>
       </div>
-    );    
+    );
   }
 }
 

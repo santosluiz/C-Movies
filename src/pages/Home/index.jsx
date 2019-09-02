@@ -10,12 +10,12 @@ const SearchBox = styled.div`
     padding: 0 30px;
   }
 `
-const SearchBar = styled.input.attrs({  
+const SearchBar = styled.input.attrs({
   type: "text",
 })`
   font-family: 'Lato', sans-serif;
   font-weight: 300;
-  width: calc(100% - 17px);   
+  width: calc(100% - 17px);
   height: 45px;
   border: none;
   border-radius: 20px;
@@ -29,7 +29,7 @@ const SearchBar = styled.input.attrs({
   }
   ::placeholder {
     color: #89adc4;
-  }    
+  }
 `
 const ContainerLoading = styled.div`
   width: 100%;
@@ -38,13 +38,13 @@ const ContainerLoading = styled.div`
 `
 const ErrorBox = styled.div`
   margin: 50px 0;
-  font-size: 20px;  
+  font-size: 20px;
   text-align: center;
-` 
+`
 const PaginationBox = styled.div`
-  width: 100%;  
+  width: 100%;
   text-align: center;
-` 
+`
 
 const PaginationDot = styled.button`
   cursor: pointer;
@@ -63,7 +63,7 @@ const PaginationItem = styled.button`
   color: #116193;
   font-size: 18px;
   padding: 0 12px;
-  :focus{   
+  :focus{
     outline: none;
   }
 `
@@ -71,7 +71,7 @@ const PaginationItem = styled.button`
 class Home extends Component{
   constructor(props){
     super(props)
-    this.timer = null;     
+    this.timer = null;
 
     this.state = {
       valueSearch: "",
@@ -79,7 +79,7 @@ class Home extends Component{
       movie: [],
       loading: false,
       error: false,
-      find: false,    
+      find: false,
       limit: 5,
       pageCount: 5,
       total: 0,
@@ -87,7 +87,7 @@ class Home extends Component{
       currentPage: 1
     }
  }
- 
+
   componentDidUpdate(){
     clearTimeout(this.timer);
   }
@@ -95,33 +95,33 @@ class Home extends Component{
   handleInputEnter = (event) => {
     if(event.key === 'Enter'){
       this.getValueSearch(this.state.valueSearch)
-    }    
+    }
   }
 
-  getValueSearch = (event) => {    
+  getValueSearch = (event) => {
 
     let valueSearchInput = this.state.valueSearch
 
     if(event.target){
-      valueSearchInput = event.target.value 
+      valueSearchInput = event.target.value
     }
-    
+
     this.setState({
       loading: true,
       valueSearch: valueSearchInput
     }, () => {
-      
-      if(this.state.valueSearch !== ""){        
-        this.timer = setTimeout(() => {          
-          
+
+      if(this.state.valueSearch !== ""){
+        this.timer = setTimeout(() => {
+
           const pageNumber = 1
           const begin = 0
           const end = this.state.limit
 
           this.searchData(pageNumber, begin, end)
         }, 1000)
-      } else {      
-        this.setState({ 
+      } else {
+        this.setState({
           movie: [],
           loading: false,
           find: false,
@@ -130,10 +130,10 @@ class Home extends Component{
     })
   }
 
-  searchData = async (pageNumber, begin, end) => {            
+  searchData = async (pageNumber, begin, end) => {
     let url = new URL("https://api.themoviedb.org/3/search/movie?"),
         params = {
-          api_key: "1b81b68eab6ab1714626504a1e36be3a", 
+          api_key: "1b81b68eab6ab1714626504a1e36be3a",
           language: "pt-BR",
           query: this.state.valueSearch,
           page: pageNumber,
@@ -143,10 +143,10 @@ class Home extends Component{
 
     try {
       const response = await fetch(url);
-      const dataMovie = await response.json();      
+      const dataMovie = await response.json();
       let allMoviesListAux = dataMovie.results
       let currentPageAux = pageNumber
-      
+
       if(pageNumber > 1){
         currentPageAux = this.state.currentPage + 1
         allMoviesListAux = [...this.state.allMoviesList, ...dataMovie.results]
@@ -155,7 +155,7 @@ class Home extends Component{
       let movieElements = allMoviesListAux.slice(begin, end).map(item => {
         return item
       })
-      
+
       this.setState({
         allMoviesList: allMoviesListAux,
         movie: movieElements,
@@ -174,28 +174,28 @@ class Home extends Component{
     }
   }
 
-  handleScroll = () => {    
+  handleScroll = () => {
       var doc = document.documentElement;
       var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
       if (top > 0) {
         window.scrollTo(0, top - 60)
         setTimeout(this.handleScroll, 1)
-      }    
+      }
   }
 
   handlePageChange = (pageNumber, e) => {
     this.handleScroll()
-    
+
     const begin = this.state.limit * (pageNumber - 1)
     const end = (this.state.limit * (pageNumber - 1)) + this.state.limit
-    
-    if(this.state.allMoviesList.length === begin){      
+
+    if(this.state.allMoviesList.length === begin){
       this.searchData(this.state.apiPageRequest + 1, begin, end)
     } else {
       let movieElements = this.state.allMoviesList.slice(begin, end).map(item => {
         return item
       })
-      
+
       this.setState({
         currentPage: pageNumber,
         movie: movieElements
@@ -204,24 +204,24 @@ class Home extends Component{
   };
 
   render(){
-    const { 
-      loading, 
-      movie, 
-      find, 
-      error, 
-      currentPage, 
+    const {
+      loading,
+      movie,
+      find,
+      error,
+      currentPage,
       limit,
-      pageCount, 
+      pageCount,
       total } = this.state;
-    
+
     return(
       <div>
         <SearchBox>
-          <SearchBar 
+          <SearchBar
             onChange={this.getValueSearch}
-            onKeyDown={this.handleInputEnter}            
-            placeholder="Busque um filme por nome ou gênero..." 
-          />        
+            onKeyDown={this.handleInputEnter}
+            placeholder="Busque um filme por nome ou gênero..."
+          />
         </SearchBox>
 
         {loading && (
@@ -229,7 +229,7 @@ class Home extends Component{
             <Loading />
           </ContainerLoading>
         )}
-        
+
         {error &&
           <ErrorBox>
             Erro ao fazer a pesquisa. Por favor, tente novamente mais tarde.
@@ -237,9 +237,9 @@ class Home extends Component{
         }
 
         {movie.length > 0 && find &&
-          movie.map(content => {          
-            return(              
-                <CardMovieHome content={content} />                         
+          movie.map(content => {
+            return(
+                <CardMovieHome key={content.id} content={content} />
               )
             })
         }
@@ -262,7 +262,7 @@ class Home extends Component{
               totalPages,
               getPageItemProps
             }) => (
-              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}> 
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 {hasPreviousPage && (
                   <PaginationDot
                     {...getPageItemProps({
@@ -273,11 +273,11 @@ class Home extends Component{
                     {'<'}
                   </PaginationDot>
                 )}
-  
+
                 {pages.map(page => {
                   let activePage = null;
                   if (currentPage === page) {
-                    activePage = {                       
+                    activePage = {
                       backgroundColor: '#116193',
                       borderRadius: '50%',
                       width: '50px',
@@ -286,7 +286,7 @@ class Home extends Component{
                       fontSize: '26px',
                       color: '#00e8e4',
                       boxSshadow: '0px 0px 0px 5px #116193',
-                      border: '3px solid #00e8e4',                      
+                      border: '3px solid #00e8e4',
                     };
                   }
                   return (
@@ -302,7 +302,7 @@ class Home extends Component{
                     </PaginationItem>
                   );
                 })}
-  
+
                 {hasNextPage && (
                   <PaginationDot
                     {...getPageItemProps({
@@ -320,9 +320,9 @@ class Home extends Component{
         }
 
         {find && movie.length === 0 &&
-          <p>Não foram encontrados resultados</p>         
+          <p>Não foram encontrados resultados</p>
         }
-        
+
       </div>
     )
   }
