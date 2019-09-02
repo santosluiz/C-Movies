@@ -63,7 +63,7 @@ class Home extends Component{
           const end = this.state.limit
 
           this.searchData(pageNumber, begin, end)
-        }, 1000)
+        }, 800)
       } else {
         this.setState({
           movie: [],
