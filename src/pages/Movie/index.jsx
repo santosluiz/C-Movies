@@ -5,7 +5,6 @@ import Loading from '../../components/Loading';
 import { CardMoviePage } from '../../components/CardMoviePage';
 import { TrailerMovieContent } from '../../components/TrailerMovieContent';
 
-
 const Main = styled.div`
   width: 100%;    
 `
@@ -25,6 +24,11 @@ const MovieTrailer = styled.div`
 const HasNoTrailer = styled.div`
   text-align: center;
 `
+const ErrorBox = styled.div`
+  margin: 50px 0;
+  font-size: 20px;  
+  text-align: center;
+` 
 
 class Movie extends Component {
   state = {    
@@ -33,6 +37,8 @@ class Movie extends Component {
     trailerUrl: "",
     loadingMovie: false,
     loadingTrailer: false,
+    errorMovie: false,
+    errorTrailer: false,
     hasTrailer: true,
     urlImage: "https://image.tmdb.org/t/p/w300/",
   }
@@ -50,7 +56,7 @@ class Movie extends Component {
     })    
   }
 
-  loadData = (id) => {    
+  loadData = async (id) => {    
     this.setState({      
       loadingMovie: true,
     })
@@ -62,22 +68,24 @@ class Movie extends Component {
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
-    fetch(url)
-    .then(res => res.json())
-    .then(data => {          
-      console.log(data)
+    try {
+      const response = await fetch(url);
+      const dataMovie = await response.json();      
+      
       this.setState({
-        movie: data, 
+        movie: dataMovie, 
         loadingMovie: false,               
+        errorMovie: false
       })
-    })
-    .catch(err => {
-      console.log(err)
-      throw err;
-    });      
+    } catch(err) {
+      this.setState({
+        errorMovie: true
+      })
+      console.log('fetch failed', err);
+    }
   }
 
-  loadTrailer = (id) => {   
+  loadTrailer = async (id) => {   
     this.setState({
       loadingTrailer: true,
     })
@@ -89,33 +97,34 @@ class Movie extends Component {
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
-    fetch(url)
-    .then(res => res.json())
-    .then(data => {          
-      console.log(data)
-      if(data.results.length > 0){
+    try {
+      const response = await fetch(url);
+      const dataTrailer = await response.json();      
+
+      if(dataTrailer.results.length > 0){
         
         let keyTrailer = ""
-        data.results.map(item => { 
+        dataTrailer.results.map(item => { 
          keyTrailer = item.key
         })
-  
-        this.setState({
-          trailerUrl: "https://www.youtube.com/embed/" + keyTrailer,
-          hasTrailer: true,
-          loadingTrailer: false,
-        })
-      } else {
-        this.setState({
-          hasTrailer: false,
-          loadingTrailer: false,
-        })
-      }
-    })
-    .catch(err => {
-      console.log(err)
-      throw err;
-    });      
+
+      this.setState({
+        trailerUrl: "https://www.youtube.com/embed/" + keyTrailer,
+        hasTrailer: true,
+        errorTrailer: false,
+      })
+    } else {
+      this.setState({
+        hasTrailer: false,
+        loadingTrailer: false,
+      })
+    }
+   }catch(err) {
+      this.setState({
+        errorTrailer: true,
+      })
+      console.log('fetch failed', err);
+    }    
   }
 
   handleNoHasTrailer = (title) => {
@@ -123,13 +132,19 @@ class Movie extends Component {
   }
 
   render(){    
-    const { movie, trailerUrl, loadingMovie, loadingTrailer, hasTrailer } = this.state    
+    const { movie, trailerUrl, loadingMovie, loadingTrailer, hasTrailer, error } = this.state    
     return(
       <Main>
         {loadingMovie && 
           <ContainerLoading>
             <Loading />
           </ContainerLoading>
+        }
+
+        {error &&
+          <ErrorBox>
+            Erro ao carregar os dados. Por favor, tente novamente mais tarde.
+          </ErrorBox>
         }
 
         {movie.id > 0 &&

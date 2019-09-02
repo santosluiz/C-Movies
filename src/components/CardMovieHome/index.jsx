@@ -68,7 +68,7 @@ const CardDescription = styled.div`
   font-family: 'Lato',sans-serif;
   font-weight: 400;
   @media ${device.tablet}{
-    margin: 35px 30px;
+    margin: 30px 30px 45px 30px;
     text-align: justify;
   }
 }
@@ -78,6 +78,9 @@ const CardReadMore = styled.div`
   position: absolute;
   bottom: 0;
   right: 20px;
+  @media ${device.tablet}{
+    bottom: -2px; 
+  }
 `
 
 export class CardMovieHome extends Component{

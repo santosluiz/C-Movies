@@ -9,13 +9,12 @@ const SearchBox = styled.div`
     padding: 0 30px;
   }
 `
-
 const SearchBar = styled.input.attrs({  
   type: "text",
 })`
   font-family: 'Lato', sans-serif;
   font-weight: 300;
-  width: 100%;
+  width: calc(100% - 17px);   
   height: 45px;
   border: none;
   border-radius: 20px;
@@ -29,11 +28,7 @@ const SearchBar = styled.input.attrs({
   }
   ::placeholder {
     color: #89adc4;
-  }
-  @media ${device.tablet} {  
-    width: calc(100% - 17px);    
-  }
-  
+  }    
 `
 const ContainerLoading = styled.div`
   width: 100%;
@@ -41,11 +36,18 @@ const ContainerLoading = styled.div`
   margin-top: 150px;
 `
 
+const ErrorBox = styled.div`
+  margin: 50px 0;
+  font-size: 20px;  
+  text-align: center;
+` 
+
 class Home extends Component{
   state = {
     valueSearch: "",
     movie: [],
     loading: false,
+    error: false,
     find: false,    
   }
 
@@ -53,51 +55,54 @@ class Home extends Component{
     this.setState({
       loading: true,
       valueSearch: event.target.value
-    })
-    
-    let value = event.target.value
+    }, () => {
 
-    if(value !== ""){
-      this.searchData(1)
-    } else {      
-      this.setState({ 
-        movie: [],
+      if(this.state.valueSearch !== ""){        
+        setTimeout(() => {
+          this.searchData(1)
+        }, 1500)
+
+      } else {      
+        this.setState({ 
+          movie: [],
+          loading: false,
+          find: false,
+        })
+      }
+    })
+  }
+
+  searchData = async (pageNumber) => {            
+    let url = new URL("https://api.themoviedb.org/3/search/movie?"),
+        params = {
+          api_key: "1b81b68eab6ab1714626504a1e36be3a", 
+          language: "pt-BR",
+          query: this.state.valueSearch,
+          page: pageNumber,
+          include_adult: false
+        }
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+    try {
+      const response = await fetch(url);
+      const dataMovie = await response.json();      
+      
+      this.setState({
+        movie: dataMovie.results,
         loading: false,
-        find: false,
+        error: false,
+        find: true,
       })
+    } catch(err) {
+      this.setState({
+        error: true
+      })
+      console.log('fetch failed', err);
     }
   }
 
-  searchData = (pageNumber) => {        
-    setTimeout(() => {
-      let url = new URL("https://api.themoviedb.org/3/search/movie?"),
-          params = {
-            api_key: "1b81b68eab6ab1714626504a1e36be3a", 
-            language: "pt-BR",
-            query: this.state.valueSearch,
-            page: pageNumber,
-            include_adult: false
-          }
-      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-
-      fetch(url)
-      .then(res => res.json())
-      .then(data => {          
-        this.setState({
-          movie: data.results,
-          loading: false,
-          find: true,
-        })
-      })
-      .catch(err => {
-        console.log(err)
-        throw err;
-      });    
-    }, 1000);
-  }
-
   render(){
-    const { loading, movie, find } = this.state;
+    const { loading, movie, find, error } = this.state;
     
     return(
       <div>
@@ -111,6 +116,12 @@ class Home extends Component{
           </ContainerLoading>
         )}
         
+        {error &&
+          <ErrorBox>
+            Erro ao fazer a pesquisa. Por favor, tente novamente mais tarde.
+          </ErrorBox>
+        }
+
         {movie.length > 0 && find &&
           movie.map(content => {          
             return(              
@@ -129,7 +140,6 @@ class Home extends Component{
             </ul>
           </div>
         }
-
 
         {find && movie.length === 0 &&
           <p>Não foram encontrados resultados</p>         
