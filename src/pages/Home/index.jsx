@@ -43,6 +43,11 @@ const ErrorBox = styled.div`
 ` 
 
 class Home extends Component{
+  constructor(props){
+    super(props)
+    this.timer = null;     
+ }
+
   state = {
     valueSearch: "",
     movie: [],
@@ -51,14 +56,18 @@ class Home extends Component{
     find: false,    
   }
 
+  componentDidUpdate(){
+    clearTimeout(this.timer);
+  }
+
   getValueSearch = (event) => {       
     this.setState({
       loading: true,
       valueSearch: event.target.value
     }, () => {
-
+      
       if(this.state.valueSearch !== ""){        
-        setTimeout(() => {
+        this.timer = setTimeout(() => {          
           this.searchData(1)
         }, 1500)
 
