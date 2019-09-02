@@ -19,6 +19,10 @@ const Title = styled.div`
   padding: 15px 30px 5px 30px;
   background: #e6e6e6;
   box-sizing: border-box;
+  @media ${device.tablet}{
+    flex-direction: column;
+    text-align: center;
+  }
 `
 const TitleH1 = styled.h1`
   font-weight: 600;  
@@ -48,6 +52,7 @@ const MovieContent = styled.div`
 `
 const MovieImageBox = styled.div`  
   width: 400px;
+  position: relative;
   @media ${device.tablet} {      
     margin: 15px auto;
     width: 300px;
@@ -121,18 +126,25 @@ const MovieCategorieItem = styled.span`
   font-weight: 500;
   text-align: center;
   @media ${device.tablet} {  
-    font-size: 23px;
+    font-size: 20px;
     margin: 0px 8px 8px 0px;
   }
 `
 const PopularityBox = styled.div`
   display: flex;
   justify-content: flex-end;
+  position: absolute;
+  bottom: 15px;
+  left: -150px;
   @media ${device.tablet} {      
     position: absolute;
-    top: -105px;
-    right: 30px;
+    left: 0;
+    right: -30px;
+    bottom: -40px;
   }
+  @media ${device.mobileS} {      
+    right: -2px;
+  }  
 `
 
 export class CardMoviePage extends Component{
@@ -202,9 +214,7 @@ export class CardMoviePage extends Component{
             })}
           </MovieCategorie>
 
-          <PopularityBox>
-            <Popularity size="big" content={this.props.movie.popularity}></Popularity>                                  
-          </PopularityBox>
+
         </MovieContent>
 
         <MovieImageBox>
@@ -212,6 +222,9 @@ export class CardMoviePage extends Component{
             src={handleGetImageCard(urlImage, this.props.movie.poster_path)} 
             alt={this.props.movie.title}             
           />        
+          <PopularityBox>
+            <Popularity size="big" content={this.props.movie.popularity}></Popularity>                                  
+          </PopularityBox>
         </MovieImageBox>        
       </MovieData>        
     </MovieBox>

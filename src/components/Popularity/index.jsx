@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { device } from '../../helper/device';
 import { handleGetPopularity } from '../../helper/getDataMovie.js';
 
 const CardPopularitySmall = styled.span`
@@ -29,6 +30,11 @@ const CardPopularityBig = styled.span`
   align-items: center;
   justify-content: center;
   line-height: 0;  
+  @media ${device.mobileS} {      
+    width: 90px;
+    height: 90px;
+    font-size: 35px;
+  }
 `
 
 export class Popularity extends Component{
